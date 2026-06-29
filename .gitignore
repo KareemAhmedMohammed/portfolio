@@ -1,0 +1,6 @@
+.DS_Store
+.railway/
+.playwright-cli/
+output/
+node_modules/
+npm-debug.log*
