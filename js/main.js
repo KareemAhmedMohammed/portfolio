@@ -231,6 +231,7 @@ const applyLanguage = (lang) => {
   });
   if (langToggle) langToggle.lastChild.nodeValue = lang === 'ar' ? ' EN' : ' AR';
   if (loaderLabel) loaderLabel.textContent = i18n[lang].loader;
+  document.dispatchEvent(new CustomEvent('langchange', { detail: lang }));
 };
 
 document.body.classList.add('is-ready');
@@ -295,7 +296,7 @@ const resizeCanvas = (targetCanvas, targetCtx) => {
 };
 
 const seedParticles = () => {
-  const count = Math.max(320, Math.min(980, Math.floor((window.innerWidth * window.innerHeight) / 1800)));
+  const count = Math.max(900, Math.min(2000, Math.floor((window.innerWidth * window.innerHeight) / 650)));
   particles.length = 0;
   for (let i = 0; i < count; i += 1) {
     const columns = Math.ceil(Math.sqrt(count * (width / Math.max(height, 1))));
@@ -319,34 +320,57 @@ const seedParticles = () => {
   }
 };
 
+// The footer name, spelled by the converging dots — cycles in EN or AR.
+// English reads: "Kareem is applied AI developer".
+// Arabic must follow Arabic word order: "كريم هو مطوّر ذكاء اصطناعي تطبيقي"
+// (Kareem is a developer of applied AI), so the cycle order differs.
+const NAME_WORDS = {
+  en: ['KAREEM', 'IS', 'APPLIED', 'AI', 'DEVELOPER'],
+  ar: ['كريم', 'هو', 'مطوّر', 'ذكاء اصطناعي', 'تطبيقي']
+};
+
 const buildPhraseTargets = () => {
-  const phrases = ['AI', 'API', 'BUILD', 'SHIP'];
+  const lang = currentLang === 'ar' ? 'ar' : 'en';
+  const phrases = NAME_WORDS[lang];
+  const family = lang === 'ar' ? 'Cairo' : 'Inter';
   const offscreen = document.createElement('canvas');
   const offCtx = offscreen.getContext('2d');
   if (!offCtx) return;
 
+  // Pick one font size so the WIDEST word still fits the field, then use it
+  // for every word — guarantees DEVELOPER / ذكاء اصطناعي are never clipped.
+  const maxW = width * 0.84;
+  let fontSize = Math.min(186, Math.max(56, height * 0.5));
+  let widest = 0;
+  phrases.forEach((p) => {
+    offCtx.font = `800 ${fontSize}px ${family}, Arial, sans-serif`;
+    widest = Math.max(widest, offCtx.measureText(p).width);
+  });
+  if (widest > maxW) fontSize = Math.max(46, fontSize * (maxW / widest));
+
   offscreen.width = Math.max(720, Math.floor(width));
-  offscreen.height = Math.max(300, Math.floor(height * 0.42));
-  const fontSize = Math.max(86, Math.min(210, width / 7));
+  offscreen.height = Math.max(320, Math.floor(fontSize * 1.8));
+  const cx = offscreen.width / 2;
+  const cy = offscreen.height / 2;
+  // tighter sampling step → denser, more legible glyphs
+  const step = Math.max(3, Math.floor(fontSize / 34));
 
   phraseTargets = phrases.map((phrase) => {
     offCtx.clearRect(0, 0, offscreen.width, offscreen.height);
     offCtx.fillStyle = '#000';
     offCtx.textAlign = 'center';
     offCtx.textBaseline = 'middle';
-    offCtx.font = `800 ${fontSize}px Inter, Arial, sans-serif`;
-    offCtx.fillText(phrase, offscreen.width / 2, offscreen.height / 2);
+    offCtx.font = `800 ${fontSize}px ${family}, Arial, sans-serif`;
+    offCtx.fillText(phrase, cx, cy);
 
     const image = offCtx.getImageData(0, 0, offscreen.width, offscreen.height).data;
     const points = [];
-    const step = Math.max(7, Math.floor(fontSize / 18));
     for (let y = 0; y < offscreen.height; y += step) {
       for (let x = 0; x < offscreen.width; x += step) {
-        const alpha = image[(y * offscreen.width + x) * 4 + 3];
-        if (alpha > 80) {
+        if (image[(y * offscreen.width + x) * 4 + 3] > 80) {
           points.push({
-            x: (x / offscreen.width) * width,
-            y: height * 0.48 + (y - offscreen.height / 2)
+            x: width / 2 + (x - cx),
+            y: height * 0.48 + (y - cy)
           });
         }
       }
@@ -364,13 +388,21 @@ const resizeAll = () => {
 
 const aiShapeTarget = (index, t) => {
   if (phraseTargets.length) {
-    const phraseIndex = Math.floor(t / 2400) % phraseTargets.length;
+    const PERIOD = 2900;
+    const HOLD = 0.62; // fraction of each cycle the word stays crisp and readable
+    const phraseIndex = Math.floor(t / PERIOD) % phraseTargets.length;
     const nextPhraseIndex = (phraseIndex + 1) % phraseTargets.length;
-    const morph = (1 - Math.cos(((t % 2400) / 2400) * Math.PI)) / 2;
+    const local = (t % PERIOD) / PERIOD;
+    const eased = local < HOLD ? 0 : (local - HOLD) / (1 - HOLD);
+    const morph = (1 - Math.cos(eased * Math.PI)) / 2;
     const current = phraseTargets[phraseIndex];
     const next = phraseTargets[nextPhraseIndex];
-    const a = current[index % current.length];
-    const b = next[index % next.length];
+    // spread particles proportionally across the whole word so every glyph
+    // is filled even when there are more sample points than particles
+    const total = particles.length || 1;
+    const frac = (index % total) / total;
+    const a = current[Math.floor(frac * current.length) % current.length];
+    const b = next[Math.floor(frac * next.length) % next.length];
     const breathe = Math.sin(t * 0.0014 + index * 0.27) * 3;
     if (a && b) {
       return {
@@ -555,3 +587,79 @@ window.addEventListener('pointerleave', () => {
 resizeAll();
 requestAnimationFrame(animateParticles);
 runLoader();
+
+/* ── Rebuild the footer name cloud when the language flips ────── */
+document.addEventListener('langchange', () => {
+  buildPhraseTargets();
+});
+
+/* ── Typed spine down the left margin ────────────────────────── */
+(() => {
+  const spine = document.querySelector('[data-spine]');
+  if (!spine) return;
+
+  const LINES = {
+    ar: 'كريم أحمد · مطوّر ذكاء اصطناعي تطبيقي',
+    en: 'kareem ahmed · applied ai developer'
+  };
+  let LINE = LINES[currentLang === 'ar' ? 'ar' : 'en'];
+  const accentWords = ['applied', 'ai', 'ذكاء', 'اصطناعي'];
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Shrink the type until the whole phrase fits the column — never cut mid-word.
+  const fitToColumn = () => {
+    let size = 12;
+    spine.style.fontSize = `${size}px`;
+    let guard = 0;
+    while (spine.scrollHeight > spine.clientHeight && size > 8 && guard < 12) {
+      size -= 0.5;
+      spine.style.fontSize = `${size}px`;
+      guard += 1;
+    }
+  };
+
+  let chars = [];
+  let caret = null;
+  let revealed = -1;
+
+  // Rebuilt whenever the language flips, so the spine matches the active language.
+  const buildLine = () => {
+    LINE = LINES[currentLang === 'ar' ? 'ar' : 'en'];
+    spine.replaceChildren();
+    let wordStart = 0;
+    chars = [...LINE].map((ch, i) => {
+    const span = document.createElement('span');
+    span.textContent = ch === ' ' ? ' ' : ch;
+    if (ch === ' ' || ch === '—') wordStart = i + 1;
+    const word = LINE.slice(wordStart).split(/[\s—]/)[0];
+    if (accentWords.includes(word.toLowerCase())) span.dataset.accent = '1';
+    return span;
+    });
+    chars.forEach((c) => spine.appendChild(c));
+    caret = document.createElement('span');
+    caret.className = 'sp-caret';
+    spine.appendChild(caret);
+    fitToColumn();
+    revealed = -1;
+    update();
+  };
+
+  const update = () => {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = max > 0 ? Math.min(1, window.scrollY / max) : 1;
+    const count = reduceMotion ? chars.length : Math.round(progress * chars.length);
+    if (count === revealed) return;
+    revealed = count;
+    chars.forEach((span, i) => {
+      const on = i < count;
+      span.classList.toggle('sp-on', on);
+      span.classList.toggle('sp-accent', on && span.dataset.accent === '1');
+    });
+    if (caret) caret.style.opacity = count >= chars.length ? '0' : '1';
+  };
+
+  buildLine();
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', () => { fitToColumn(); update(); });
+  document.addEventListener('langchange', buildLine);
+})();

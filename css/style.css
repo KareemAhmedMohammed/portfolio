@@ -1045,3 +1045,76 @@ body[dir="rtl"] .timeline-item span {
     min-height: 440px;
   }
 }
+
+/* ── Footer name: spelled by the page's converging ink dots ──── */
+.site-footer {
+  min-height: 78vh;
+}
+
+/* keep the name for screen readers; the particle field draws it visually */
+.footer-name {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Typed spine running down the left margin ────────────────── */
+.typed-spine {
+  position: fixed;
+  top: 124px;
+  left: 22px;
+  bottom: 40px;
+  z-index: 2;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 12px;
+  letter-spacing: 0.32em;
+  text-transform: lowercase;
+  color: var(--muted);
+  pointer-events: none;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.typed-spine .sp-on {
+  color: var(--ink);
+}
+
+.typed-spine .sp-accent {
+  color: var(--accent);
+}
+
+.typed-spine .sp-caret {
+  display: inline-block;
+  width: 0.7em;
+  height: 2px;
+  margin-left: 0.2em;
+  background: var(--accent);
+  animation: spCaret 1s steps(2, start) infinite;
+}
+
+@keyframes spCaret {
+  50% { opacity: 0; }
+}
+
+body[dir="rtl"] .typed-spine {
+  left: auto;
+  right: 22px;
+}
+
+@media (max-width: 1180px) {
+  .typed-spine { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dm-dot.is-lit { animation: none; }
+  .dm-word { transition: none; }
+  .typed-spine .sp-caret { animation: none; }
+}
