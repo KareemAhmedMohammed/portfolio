@@ -231,14 +231,6 @@ button {
   background: #111;
   font-size: 12px;
   font-weight: 750;
-  opacity: 0;
-  pointer-events: none;
-  transform: translate(-50%, -8px) scale(0.96);
-  transition: opacity 420ms var(--ease), transform 420ms var(--ease);
-}
-
-.site-header:hover .nav-links,
-.site-header:focus-within .nav-links {
   opacity: 1;
   pointer-events: auto;
   transform: translate(-50%, 0) scale(1);
@@ -966,6 +958,14 @@ body[dir="rtl"] .timeline-item span {
     min-width: 156px;
     gap: 28px;
     padding: 0 22px;
+  }
+
+  .nav-links {
+    max-width: calc(100vw - 32px);
+    gap: 12px;
+    padding: 10px 16px;
+    overflow-x: auto;
+    white-space: nowrap;
   }
 
   .hero,
