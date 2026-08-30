@@ -12,7 +12,10 @@ const types = {
   '.js': 'text/javascript; charset=utf-8',
   '.png': 'image/png',
   '.svg': 'image/svg+xml',
-  '.webp': 'image/webp'
+  '.webp': 'image/webp',
+  '.mp3': 'audio/mpeg',
+  '.ico': 'image/x-icon',
+  '.json': 'application/json; charset=utf-8'
 };
 
 const send = (response, status, body, contentType = 'text/plain; charset=utf-8') => {

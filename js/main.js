@@ -26,8 +26,8 @@ const i18n = {
     'hero.signal_2_label': 'Stack',
     'hero.signal_2_value': 'Websites and mobile apps',
     'hero.signal_3_label': 'Edge',
-    'hero.signal_3_value': 'Arabic and English experiences',
-    'story.statement': 'I turn complicated ideas into clear digital products people can actually use. That includes websites, mobile apps, business tools, and AI automations in English and Arabic.',
+    'hero.signal_3_value': 'Tested before handover',
+    'story.statement': 'I turn complicated ideas into clear digital products people can actually use. That includes websites, mobile apps, business tools, and AI automations.',
     'story.closing': 'Simple to understand. Reliable after launch.',
     'experience.nova_role': 'Freelance AI developer',
     'experience.nova_period': 'Assiut, Egypt',
@@ -36,7 +36,7 @@ const i18n = {
     'stack.label': 'BUILT WITH',
     'console.cap': 'Live build trace',
     'profile.status': 'Available for selected freelance work',
-    'profile.copy': 'I plan, design, and build complete digital products. I explain decisions clearly, support Arabic and English, and test the finished work before I hand it over.',
+    'profile.copy': 'I plan, design, and build complete digital products. I explain decisions clearly and test the finished work before I hand it over.',
     'capabilities.kicker': 'ABOUT THE WORK',
     'capabilities.title': 'From an idea to a working product.',
     'projects.kicker': 'SELECTED PROJECTS',
@@ -85,8 +85,8 @@ const i18n = {
     'services.card_3_copy': 'Connect forms, messages, customer records, payments, and notifications so information moves without repeated copying.',
     'services.card_4_title': 'Websites and mobile apps',
     'services.card_4_copy': 'Responsive websites and mobile apps with clear screens, fast everyday actions, and a consistent experience across devices.',
-    'services.card_5_title': 'Arabic and English experiences',
-    'services.card_5_copy': 'Natural Arabic and English wording, right-to-left layouts, and details that make the product feel familiar to local customers.',
+    'services.card_5_title': 'Localization and language support',
+    'services.card_5_copy': 'Natural wording in every language you ship, layouts that handle both text directions, and details that make the product feel local to the people using it.',
     'services.card_6_title': 'Testing and launch support',
     'services.card_6_copy': 'I test the important journeys, check phone and desktop layouts, and confirm the live version works before calling the project finished.',
     'certs.kicker': 'CREDENTIALS',
@@ -107,11 +107,17 @@ const i18n = {
     'play.title': 'Things built for the pleasure of building them.',
     'contact.kicker': 'FREELANCE AVAILABILITY',
     'contact.title': 'Have an AI workflow that needs to become a real product?',
-    'contact.copy': 'I can help with AI agents, automation pipelines, SaaS dashboards, API integrations, bilingual client flows, and prototype-to-production builds.',
+    'contact.copy': 'I can help with AI agents, automation pipelines, SaaS dashboards, API integrations, client-facing flows, and prototype-to-production builds.',
     'contact.email_button': 'Email Kareem',
     'contact.whatsapp_button': 'WhatsApp',
     'footer.copy': '© 2026 Built by Kareem',
     'footer.top': 'Back to top',
+    'footer.lead': 'Grow your idea the way you just grew that flower.',
+    'footer.sub': "Tell me what you're building. I'll handle the system, the interface, and getting it live.",
+    'footer.grow': 'CLICK TO GROW',
+    'footer.grown': 'THE GARDEN IS FULL',
+    'footer.sound_credit': 'Dawn chorus',
+    'footer.sound_changes': 'Shortened, converted to mono and re-encoded.',
     loader: 'Loading portfolio',
     swap: ['software products with AI'],
     trace: [
@@ -225,6 +231,12 @@ const i18n = {
     'contact.whatsapp_button': 'واتساب',
     'footer.copy': '© ٢٠٢٦ بُني بواسطة كريم',
     'footer.top': 'فوق',
+    'footer.lead': 'كبّر فكرتك زي ما لسه كبّرت الوردة دي.',
+    'footer.sub': 'قوللي بتبني إيه، وأنا أظبط النظام والواجهة والعربي اللي هينزل بيه.',
+    'footer.grow': 'دوس عشان تزرع',
+    'footer.grown': 'الجنينة كملت',
+    'footer.sound_credit': 'أصوات الفجر',
+    'footer.sound_changes': 'اتقصّت واتحولت لمونو واتعملها إعادة ترميز.',
     loader: 'بنجهز البورتفوليو',
     swap: ['منتجات برمجية بالذكاء الاصطناعي'],
     trace: [
@@ -281,8 +293,18 @@ function splitHero() {
 }
 
 function playHero() {
-  if (lang === 'ar') return;
-  $$('.hero-display .ch').forEach(c => c.classList.add('in'));
+  const display = $('.hero-display');
+  if (lang === 'ar') { display?.classList.add('is-settled'); return; }
+
+  const chs = $$('.hero-display .ch');
+  chs.forEach(c => c.classList.add('in'));
+
+  // Hand control back to CSS once the entrance is done, so :hover can take over.
+  const last = chs[chs.length - 1];
+  if (!last || !display) { display?.classList.add('is-settled'); return; }
+  const settle = () => display.classList.add('is-settled');
+  last.addEventListener('animationend', settle, { once: true });
+  setTimeout(settle, 2200); // fallback if the event never fires
 }
 
 /* ---------------- stable hero phrase ---------------- */
@@ -487,6 +509,8 @@ function initPointer() {
     }
     // Give the cursor a light edge over the darker hero sky.
     dot.classList.toggle('on-sky', !!e.target.closest('.hero'));
+    // Over the garden the dot becomes a rosette you plant with.
+    dot.classList.toggle('is-garden', !!e.target.closest('[data-garden-host]'));
     if (!raf) raf = requestAnimationFrame(loop);
   }, { passive: true });
 
@@ -504,41 +528,319 @@ function initPointer() {
     cy += (my - cy) * 0.22;
     dot.style.transform = `translate3d(${cx}px, ${cy}px, 0) translate(-50%, -50%)`;
 
-    // The sky moves on its own. Only the headline responds to the pointer.
-    const hero = $('.hero');
-    if (hero && !$('.view[data-view="home"]').hidden) {
-      const hr = hero.getBoundingClientRect();
-      const pointerInHero = mx >= hr.left && mx <= hr.right && my >= hr.top && my <= hr.bottom;
-
-      // Nearby letters make a small, bounded movement away from the pointer.
-      // This feels alive without stretching the words or changing them on scroll.
-      if (!document.body.classList.contains('is-loading')) chars().forEach(ch => {
-        const r = ch.getBoundingClientRect();
-        if (!pointerInHero) {
-          ch.style.transform = '';
-          ch.style.color = '';
-          return;
-        }
-        const dx = mx - (r.left + r.width / 2);
-        const dy = my - (r.top + r.height / 2);
-        const distance = Math.hypot(dx, dy) || 1;
-        const influence = Math.max(0, 1 - distance / 260);
-        const tx = (-dx / distance) * influence * 11;
-        const ty = (-dy / distance) * influence * 8;
-        ch.style.transform = `translate3d(${tx}px, ${ty}px, 0)`;
-        // Warm yellow at the edge, deepening toward orange nearest the pointer.
-        // Each glyph keeps its own distance so the colour travels through the word.
-        ch.style.color = influence > .02
-          ? `hsl(${44 - influence * 16} 91% ${62 - influence * 5}%)`
-          : '';
-      });
-    }
+    // Letters are handled by a pure CSS :hover rule (each glyph lifts, rotates
+    // and recolours on its own). Nothing here may write ch.style.transform or
+    // ch.style.color — an inline style beats :hover and would silently kill it.
 
     if (Math.abs(mx - cx) > .3 || Math.abs(my - cy) > .3) raf = requestAnimationFrame(loop);
   }
   loop();
 }
 initPointer();
+
+/* ---------------- ambient bird sound ----------------
+   Dawn chorus by Alexander Kurthy, via xeno-canto / Wikimedia Commons,
+   CC BY-SA 4.0. Shortened, converted to mono, re-encoded.
+   Off by default: browsers block autoplay, and unrequested audio is rude.
+   The file is only fetched once someone actually turns it on. */
+const SOUND_KEY = 'ka:sound';
+const SOUND_SRC = 'assets/birds-sky.mp3';
+const soundBtn = $('[data-sound-toggle]');
+
+let audioCtx = null, soundGain = null, soundBuf = null, soundNode = null;
+let soundOn = false, soundBusy = false;
+
+function storage(op, val) {
+  try { return op === 'get' ? localStorage.getItem(SOUND_KEY) : localStorage.setItem(SOUND_KEY, val); }
+  catch { return null; }   // private mode, blocked site data — never fatal
+}
+
+function paintSound() {
+  if (!soundBtn) return;
+  soundBtn.setAttribute('aria-pressed', String(soundOn));
+  soundBtn.setAttribute('aria-label', soundOn ? 'Turn bird sound off' : 'Turn bird sound on');
+  soundBtn.classList.toggle('is-loading', soundBusy);
+}
+
+async function soundStart() {
+  audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+  if (audioCtx.state === 'suspended') await audioCtx.resume();
+
+  if (!soundBuf) {
+    soundBusy = true; paintSound();
+    try {
+      const res = await fetch(SOUND_SRC);
+      if (!res.ok) throw new Error(`audio ${res.status}`);
+      soundBuf = await audioCtx.decodeAudioData(await res.arrayBuffer());
+    } catch (err) {
+      console.warn('bird sound unavailable:', err);
+      soundOn = false; soundBusy = false; paintSound();
+      return;
+    }
+    soundBusy = false;
+  }
+
+  soundGain = audioCtx.createGain();
+  soundGain.gain.value = 0;
+  soundGain.connect(audioCtx.destination);
+
+  soundNode = audioCtx.createBufferSource();
+  soundNode.buffer = soundBuf;
+  soundNode.loop = true;
+  // Loop inside the clip so the encoder's head/tail padding never clicks.
+  soundNode.loopStart = 0.35;
+  soundNode.loopEnd = Math.max(soundBuf.duration - 0.35, 1);
+  soundNode.connect(soundGain);
+  soundNode.start(0, soundNode.loopStart);
+
+  soundGain.gain.linearRampToValueAtTime(0.28, audioCtx.currentTime + 1.4);
+  paintSound();
+}
+
+function soundStop() {
+  if (!soundNode || !audioCtx) return;
+  const node = soundNode, gain = soundGain;
+  soundNode = null; soundGain = null;
+  gain.gain.cancelScheduledValues(audioCtx.currentTime);
+  gain.gain.setValueAtTime(gain.gain.value, audioCtx.currentTime);
+  gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.6);
+  setTimeout(() => { try { node.stop(); } catch {} }, 700);
+}
+
+soundBtn?.addEventListener('click', async () => {
+  if (soundBusy) return;
+  soundOn = !soundOn;
+  storage('set', soundOn ? 'on' : 'off');
+  paintSound();
+  if (soundOn) await soundStart(); else soundStop();
+});
+
+// Don't keep playing into a tab nobody is looking at.
+document.addEventListener('visibilitychange', () => {
+  if (!audioCtx) return;
+  if (document.hidden) audioCtx.suspend();
+  else if (soundOn) audioCtx.resume();
+});
+
+// Restore the preference, but never auto-start: playback still needs a gesture.
+if (storage('get') === 'on' && soundBtn) {
+  soundBtn.setAttribute('aria-label', 'Turn bird sound on');
+  soundBtn.classList.add('is-armed');
+}
+paintSound();
+
+/* ---------------- footer garden ----------------
+   Click the footer to grow a plant where you clicked. */
+const garden = $('[data-garden]');
+const gardenHost = $('[data-garden-host]');
+const gardenCue = $('[data-garden-cue]');
+const PLANT_CAP = 22;
+const rand = (a, b) => a + Math.random() * (b - a);
+
+const SVGNS = 'http://www.w3.org/2000/svg';
+const GREENS = ['#5c7d3f', '#6b8f49', '#4f6f36', '#7a9c52'];
+const PETALS = ['#F5C542', '#E8501E', '#FFF9E9', '#E8A0B4', '#D96C8F', '#EFB93F'];
+const pick = a => a[Math.floor(Math.random() * a.length)];
+
+/* A mixed border, not a row of identical stems: flowers (always with a head),
+   trees, bushes and reeds. `kind` is chosen once and drives size and shape. */
+function makePlant(xPct, kindHint) {
+  const kinds = ['flower', 'flower', 'flower', 'flower', 'tree', 'tree', 'bush', 'bush', 'reed'];
+  const kind = kindHint || pick(kinds);
+
+  const w = kind === 'tree' ? 130 : kind === 'bush' ? 96 : 56;
+  const h = kind === 'tree' ? rand(190, 280)
+          : kind === 'bush' ? rand(70, 108)
+          : kind === 'reed' ? rand(120, 190)
+          : rand(110, 195);
+  const mid = w / 2;
+  const green = pick(GREENS);
+
+  const plant = document.createElement('div');
+  plant.className = 'plant plant-' + kind;
+  plant.style.left = xPct.toFixed(3) + '%';
+  plant.style.zIndex = String(kind === 'tree' ? 0 : kind === 'bush' ? 1 : 2);
+  plant.style.setProperty('--g', '0');
+
+  const sway = document.createElement('div');
+  sway.className = 'sway';
+  // heavier things move less
+  const amp = kind === 'tree' ? rand(.6, 1.2) : kind === 'bush' ? rand(.7, 1.4) : rand(1.4, 3);
+  sway.style.setProperty('--swayA', amp.toFixed(1) + 'deg');
+  sway.style.setProperty('--sway', rand(4.2, 8.5).toFixed(1) + 's');
+  sway.style.setProperty('--sway-d', (-rand(0, 4)).toFixed(1) + 's');
+
+  const svg = document.createElementNS(SVGNS, 'svg');
+  svg.setAttribute('width', w);
+  svg.setAttribute('height', h);
+  svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+
+  const g = document.createElementNS(SVGNS, 'g');
+  g.setAttribute('filter', 'url(#ft-paint)');
+
+  const el = (name, attrs, parent = g) => {
+    const n = document.createElementNS(SVGNS, name);
+    for (const k in attrs) n.setAttribute(k, attrs[k]);
+    parent.appendChild(n);
+    return n;
+  };
+  const stroke = (d, sw, colour = green) =>
+    el('path', { d, stroke: colour, 'stroke-width': sw.toFixed(1), fill: 'none', 'stroke-linecap': 'round' });
+
+  if (kind === 'tree') {
+    const bark = pick(['#6B4B2A', '#7A5733', '#5E4225']);
+    const canopyY = h * rand(.30, .40);
+    stroke(`M${mid} ${h} C ${mid + rand(-5, 5)} ${h * .72} ${mid + rand(-7, 7)} ${h * .55} ${mid} ${canopyY}`, rand(6, 9), bark);
+    stroke(`M${mid} ${h * .62} Q ${mid - 20} ${h * .55} ${mid - 28} ${h * .46}`, rand(3, 4.5), bark);
+    stroke(`M${mid} ${h * .70} Q ${mid + 20} ${h * .62} ${mid + 30} ${h * .52}`, rand(3, 4.5), bark);
+
+    const canopy = el('g', { class: 'head' });
+    for (let i = 0; i < 7; i++) {
+      const a = (i / 7) * Math.PI * 2;
+      el('circle', {
+        cx: mid + Math.cos(a) * rand(16, 30),
+        cy: canopyY + Math.sin(a) * rand(10, 20),
+        r: rand(20, 30), fill: green, opacity: .95
+      }, canopy);
+    }
+    el('circle', { cx: mid, cy: canopyY, r: rand(26, 34), fill: green }, canopy);
+    // a little fruit so trees read as trees
+    if (Math.random() > .45) {
+      const fruit = pick(['#E8501E', '#F5C542', '#D96C8F']);
+      for (let i = 0; i < Math.round(rand(3, 6)); i++) {
+        el('circle', { cx: mid + rand(-26, 26), cy: canopyY + rand(-16, 18), r: rand(3, 4.6), fill: fruit }, canopy);
+      }
+    }
+  } else if (kind === 'bush') {
+    const bush = el('g', { class: 'head' });
+    for (let i = 0; i < 6; i++) {
+      el('ellipse', {
+        cx: mid + rand(-26, 26), cy: h - rand(10, 34),
+        rx: rand(16, 26), ry: rand(13, 20), fill: green, opacity: .96
+      }, bush);
+    }
+    if (Math.random() > .4) {
+      const berry = pick(PETALS);
+      for (let i = 0; i < Math.round(rand(4, 8)); i++) {
+        el('circle', { cx: mid + rand(-24, 24), cy: h - rand(14, 38), r: rand(2.4, 3.6), fill: berry }, bush);
+      }
+    }
+  } else if (kind === 'reed') {
+    for (let i = 0; i < Math.round(rand(3, 5)); i++) {
+      const lean = rand(-14, 14);
+      stroke(`M${mid + rand(-6, 6)} ${h} Q ${mid + lean} ${h * .5} ${mid + lean * 1.8} ${h * rand(.12, .28)}`, rand(1.6, 2.4));
+    }
+    const seed = el('g', { class: 'head' });
+    el('ellipse', { cx: mid, cy: h * .16, rx: 4.2, ry: 11, fill: pick(['#B4894F', '#C9A063']) }, seed);
+  } else {
+    // FLOWER — always gets a head
+    stroke(`M${mid} ${h} C ${mid + rand(-4, 4)} ${h * .6} ${mid + rand(-6, 6)} ${h * .35} ${mid + rand(-5, 5)} ${h * .2}`, rand(2.2, 3.2));
+    stroke(`M${mid} ${h} Q ${mid - rand(10, 20)} ${h * .78} ${mid - rand(16, 28)} ${h * .58}`, rand(1.8, 2.6));
+    stroke(`M${mid} ${h} Q ${mid + rand(10, 20)} ${h * .8} ${mid + rand(16, 28)} ${h * .62}`, rand(1.8, 2.8));
+
+    for (let i = 0; i < Math.round(rand(2, 4)); i++) {
+      const side = i % 2 ? 1 : -1;
+      el('ellipse', {
+        cx: mid + side * rand(7, 16), cy: h * rand(.42, .8),
+        rx: rand(6, 11), ry: rand(2.6, 4.4), fill: green,
+        transform: `rotate(${side * rand(15, 40)} ${mid + side * 12} ${h * .6})`
+      });
+    }
+
+    const petal = pick(PETALS);
+    const head = el('g', { class: 'head' });
+    const hx = mid + rand(-4, 4), hy = h * .2;
+    const petalCount = Math.round(rand(6, 9));
+    for (let i = 0; i < petalCount; i++) {
+      const a = (i / petalCount) * Math.PI * 2;
+      el('ellipse', {
+        cx: hx + Math.cos(a) * 6.5, cy: hy + Math.sin(a) * 6.5,
+        rx: 5, ry: 3.6, fill: petal,
+        transform: `rotate(${(a * 180) / Math.PI} ${hx + Math.cos(a) * 6.5} ${hy + Math.sin(a) * 6.5})`
+      }, head);
+    }
+    el('circle', { cx: hx, cy: hy, r: 3.6, fill: '#6B4B1F' }, head);
+  }
+
+  svg.appendChild(g);
+  sway.appendChild(svg);
+  plant.appendChild(sway);
+  plant.classList.add('bloomed');   // every growth now has a head to pop
+  return plant;
+}
+
+/* The garden is planted already, just small. Clicking waters the nearest
+   flower: it grows a step, and blooms when it reaches full height. */
+const SEED_COUNT = 11;
+const SEED_G = 0.26;      // starting size
+const STEP_G = 0.19;      // growth per click
+const MAX_G = 1;
+
+// A deliberate planting order so the border always reads as a mixed bed:
+// trees anchoring the ends, bushes filling, flowers and reeds between.
+const SEED_PLAN = ['tree', 'flower', 'bush', 'flower', 'reed', 'flower',
+                   'bush', 'flower', 'tree', 'flower', 'bush'];
+
+function seedGarden() {
+  if (!garden || garden.children.length) return;
+  for (let i = 0; i < SEED_COUNT; i++) {
+    // even spread with a little jitter so it doesn't read as a row of pickets
+    const kind = SEED_PLAN[i % SEED_PLAN.length];
+    const xPct = ((i + .5) / SEED_COUNT) * 100 + rand(-3.2, 3.2);
+    // Trees and bushes are wide; keep them off the edges or they get clipped.
+    const inset = kind === 'tree' ? 10 : kind === 'bush' ? 7 : 2;
+    const plant = makePlant(Math.max(inset, Math.min(100 - inset, xPct)), kind);
+    garden.appendChild(plant);
+    void plant.offsetWidth;
+    plant.style.setProperty('--g', (SEED_G + rand(-.05, .05)).toFixed(3));
+  }
+}
+
+function waterNearest(clientX) {
+  if (!garden || !gardenHost) return;
+  const plants = [...garden.children];
+  if (!plants.length) return;
+
+  // nearest by horizontal distance to where the rosette was clicked
+  let best = null, bestD = Infinity;
+  for (const p of plants) {
+    const b = p.getBoundingClientRect();
+    const d = Math.abs((b.left + b.width / 2) - clientX);
+    if (d < bestD) { bestD = d; best = p; }
+  }
+  if (!best) return;
+
+  const now = parseFloat(best.style.getPropertyValue('--g')) || SEED_G;
+  if (now >= MAX_G) { pulse(best); return; }   // already full — acknowledge the click
+
+  const next = Math.min(MAX_G, now + STEP_G);
+  best.style.setProperty('--g', next.toFixed(3));
+  gardenCue?.classList.add('is-hidden');
+
+  if (next >= MAX_G) {
+    best.classList.add('maxed');
+    // restart the bloom animation if this plant was re-triggered
+    best.classList.remove('bursting'); void best.offsetWidth; best.classList.add('bursting');
+    if ([...garden.children].every(p => (parseFloat(p.style.getPropertyValue('--g')) || 0) >= MAX_G)) {
+      gardenHost.classList.add('is-full');
+      if (gardenCue) {
+        gardenCue.textContent = i18n[lang]['footer.grown'];
+        gardenCue.classList.remove('is-hidden');
+      }
+    }
+  }
+}
+
+function pulse(plant) {
+  plant.classList.remove('bursting'); void plant.offsetWidth; plant.classList.add('bursting');
+}
+
+gardenHost?.addEventListener('click', e => {
+  if (e.target.closest('a, button, [data-link]')) return;  // leave real controls alone
+  waterNearest(e.clientX);
+});
+
+seedGarden();
 
 /* ---------------- theme ---------------- */
 $('[data-theme-toggle]')?.addEventListener('click', () => {
