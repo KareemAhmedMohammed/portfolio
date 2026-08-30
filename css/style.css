@@ -1218,6 +1218,19 @@ html[data-theme="night"] .tt-thumb { transform: translateX(36px); background: #F
 .tt-sun { left: 13px; }
 .tt-moon { right: 13px; }
 
+/* Theme changes use one composited crossfade. Keeping the grain blend mode and
+   sky layers stable avoids a full-viewport repaint during every toggle. */
+body { transition: none; }
+.grain,
+html[data-theme="night"] .grain { opacity: .035; mix-blend-mode: soft-light; }
+.sky-day, .sky-night, .stars {
+  will-change: opacity;
+  transform: translateZ(0);
+  transition-duration: .5s;
+}
+.sun, .moon { will-change: transform, opacity; transition-duration: .5s; }
+html[data-theme="night"] .moon { filter: none; }
+
 .hero {
   min-height: 100svh; margin: 0; padding: 0 var(--pad); border-radius: 0;
   align-content: center;
