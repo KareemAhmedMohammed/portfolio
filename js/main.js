@@ -545,6 +545,7 @@ $('[data-theme-toggle]')?.addEventListener('click', () => {
   const night = document.documentElement.dataset.theme === 'night';
   document.documentElement.dataset.theme = night ? 'day' : 'night';
   $('[data-theme-toggle]').setAttribute('aria-label', night ? 'Switch to night' : 'Switch to day');
+  $('[data-theme-toggle]').setAttribute('aria-pressed', String(!night));
 });
 
 /* ---------------- language dials ---------------- */

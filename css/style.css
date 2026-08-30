@@ -453,7 +453,7 @@ body.is-loading .hero-display .ch { opacity: 0; transform: translateY(.42em); }
 
 /* ---------- shared sections ---------- */
 .story, .strip, .home-work, .contact-band, .page-head,
-.featured, .plane-section, .about-intro, .services, .process, .testimonials {
+.featured, .plane-section, .about-intro, .services, .certs, .process, .testimonials {
   padding: clamp(4rem, 9vw, 9rem) var(--pad);
   position: relative;
 }
@@ -1188,6 +1188,35 @@ body { background: var(--ground); }
 .nav-cta { background: var(--card); color: var(--ink); }
 .btn-solid { background: var(--ink); color: var(--ground); }
 html[data-theme="night"] .tt-thumb { transform: translateX(28px); background: #F3EEDF; }
+
+/* The theme switch is intentionally more tactile than the navigation pill.
+   Each celestial icon sits inside a full 36px disc instead of touching it. */
+.theme-toggle {
+  border-radius: 999px;
+  transition: transform .3s var(--ease), filter .3s var(--ease);
+}
+.theme-toggle:hover { transform: translateY(-1px); filter: brightness(1.02); }
+.theme-toggle:active { transform: translateY(0) scale(.98); }
+.tt-track {
+  width: 82px; height: 46px; padding: 4px;
+  background: #E8E0C0;
+  border: 1px solid rgba(6, 6, 6, .2);
+  box-shadow: 0 9px 22px -15px rgba(6, 6, 6, .7), inset 0 1px 0 rgba(255,255,255,.72);
+}
+.tt-thumb {
+  width: 36px; height: 36px;
+  background: #F5C542;
+  box-shadow: 0 3px 9px -4px rgba(6, 6, 6, .7), inset 0 1px 0 rgba(255,255,255,.55);
+}
+html[data-theme="night"] .tt-track {
+  background: #182231;
+  border-color: rgba(243, 238, 223, .22);
+  box-shadow: 0 9px 24px -15px rgba(0,0,0,.9), inset 0 1px 0 rgba(255,255,255,.08);
+}
+html[data-theme="night"] .tt-thumb { transform: translateX(36px); background: #F3EEDF; }
+.tt-icon { width: 18px; height: 18px; }
+.tt-sun { left: 13px; }
+.tt-moon { right: 13px; }
 
 .hero {
   min-height: 100svh; margin: 0; padding: 0 var(--pad); border-radius: 0;
