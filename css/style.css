@@ -123,7 +123,7 @@ html[data-theme="night"] .grain { mix-blend-mode: screen; opacity: .05; }
 .loader.is-done { transform: translateY(-100%); }
 .loader-inner { width: min(420px, 78vw); text-align: center; }
 .loader-mark {
-  font-family: var(--f-display); font-size: 64px; display: block; margin-bottom: 1.4rem;
+  font-family: var(--f-display); font-size: clamp(48px, 10vw, 76px); display: block; margin-bottom: 1.4rem;
 }
 .loader-bar { height: 2px; background: var(--line); overflow: hidden; }
 .loader-bar i { display: block; height: 100%; width: 0; background: var(--ink); }
@@ -201,14 +201,25 @@ html[data-theme="night"] .grain { mix-blend-mode: screen; opacity: .05; }
   background: color-mix(in srgb, var(--ground) 72%, transparent);
   border: 1px solid color-mix(in srgb, var(--ink) 10%, transparent);
   backdrop-filter: blur(18px);
-  display: flex; align-items: center; padding: 3px;
+  display: flex; align-items: center; padding: 3px; position: relative;
   direction: ltr;
 }
 .tt-thumb {
   width: 22px; height: 22px; border-radius: 50%; background: var(--accent);
   transition: transform .45s var(--ease), background .45s var(--ease);
+  position: relative; z-index: 1;
 }
 html[data-theme="night"] .tt-thumb { transform: translateX(32px); background: #F3EEDF; }
+.tt-icon {
+  position: absolute; top: 50%; z-index: 2; width: 14px; height: 14px;
+  transform: translateY(-50%); pointer-events: none;
+  transition: color .35s var(--ease), opacity .35s var(--ease);
+}
+.tt-icon svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.tt-sun { left: 7px; color: #362B08; }
+.tt-moon { right: 7px; color: var(--ink); opacity: .45; }
+html[data-theme="night"] .tt-sun { color: var(--ink-soft); opacity: .45; }
+html[data-theme="night"] .tt-moon { color: #10151F; opacity: 1; }
 
 /* burger — only where the inline links are not available */
 .nav-burger { display: none; width: 40px; height: 40px; border-radius: 50%; place-items: center; }
@@ -618,6 +629,31 @@ body.is-loading .hero-display .ch { opacity: 0; transform: translateY(.42em); }
 .featured-fig { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); }
 .featured-fig img { aspect-ratio: 4/3; object-fit: cover; }
 .featured-copy { display: grid; gap: 1.1rem; }
+.project-case { padding: clamp(2rem, 5vw, 5rem) var(--pad); }
+.project-case-coachflow { padding-top: clamp(1rem, 3vw, 3rem); }
+.featured-reverse .cover { order: 2; }
+.project-features {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+  margin-top: clamp(1.5rem, 3vw, 2.5rem);
+  border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden;
+  background: var(--line);
+}
+.project-features li, .project-feature-inline {
+  background: var(--card); padding: clamp(1.2rem, 2.6vw, 2rem);
+  display: grid; gap: .65rem; align-content: start;
+}
+.project-features h3, .project-feature-inline h3 {
+  font-family: var(--f-display); font-size: clamp(21px, 2vw, 29px); font-weight: 400;
+}
+.project-features p, .project-feature-inline p { color: var(--ink-soft); font-size: 15px; }
+.feature-index {
+  font-family: var(--f-mono); font-size: 10px; letter-spacing: 1.2px;
+  color: var(--ink-soft);
+}
+.project-feature-inline {
+  grid-template-columns: auto 1fr; border: 1px solid var(--line); border-radius: 18px;
+}
+.other-projects { padding-top: clamp(3rem, 6vw, 6rem); }
 .tags { display: flex; flex-wrap: wrap; gap: .5rem; }
 .tags li {
   font-family: var(--f-mono); font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
@@ -857,6 +893,8 @@ html[dir="rtl"] .signals div { grid-template-columns: 8rem 1fr; }
    ============================================================ */
 @media (max-width: 900px) {
   .featured, .about-intro { grid-template-columns: 1fr; }
+  .featured-reverse .cover { order: initial; }
+  .project-features { grid-template-columns: 1fr; }
   .card-grid-home { grid-template-columns: 1fr; }
   .card-wide, .card-tall { grid-column: auto; grid-row: auto; }
   .card-tall figure, .card-wide figure { aspect-ratio: 16/11; }

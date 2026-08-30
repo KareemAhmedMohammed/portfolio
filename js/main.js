@@ -34,7 +34,7 @@ const i18n = {
     'clients.label': 'CLIENTS',
     'creds.label': 'COMMUNITY & CREDENTIALS',
     'stack.label': 'BUILT WITH',
-    'console.cap': 'Agent trace · live',
+    'console.cap': 'Live build trace',
     'profile.status': 'Available for selected freelance work',
     'profile.copy': 'I plan, design, and build complete digital products. I explain decisions clearly, support Arabic and English, and test the finished work before I hand it over.',
     'capabilities.kicker': 'ABOUT THE WORK',
@@ -42,21 +42,26 @@ const i18n = {
     'projects.kicker': 'SELECTED PROJECTS',
     'projects.title': 'Work that solves a clear problem.',
     'projects.copy': 'Selected websites, apps, and business tools built for real people and daily use.',
-    'projects.see_all': 'See all eleven projects',
+    'projects.see_all': 'See all seven projects',
+    'projects.lead_project': 'LEAD PROJECT',
+    'projects.connected_project': 'CONNECTED PROJECT',
+    'projects.other_kicker': 'MORE WORK',
+    'projects.other_title': 'Other projects',
     'cta.open_live': 'Open the live site',
     'cta.read_more': 'Read about this build',
-    'omdafit.short': 'A fitness website that helps visitors understand the offer and join.',
-    'omdafit.panel_copy': 'A live fitness website focused on converting visitors into subscribers through clear plans, strong visual direction, and an onboarding flow that can connect into CoachFlow when a client is approved.',
+    'omdafit.short': 'A fitness website that turns approved signups into CoachFlow clients.',
+    'omdafit.panel_copy': 'A live fitness website that explains the offer, accepts subscriber details, and provisions approved clients into CoachFlow.',
+    'omdafit.provisioning_title': 'Client provisioning',
+    'omdafit.provisioning_copy': 'An approved OmdaFit signup can create the client account in CoachFlow through a connected backend flow.',
     'omdafit.live_button': 'Open OmdaFit',
     'omdafit.contact_button': 'Discuss a similar build',
-    'coachflow.card_1_title': 'AI services',
-    'coachflow.card_1_copy': 'Anthropic-backed service layer for check-in summaries and custom Egyptian meal generation, connected through backend workflows rather than loose prompt demos.',
-    'coachflow.card_2_title': 'Provisioning bridge',
-    'coachflow.card_2_copy': 'OmdaFit approval can provision CoachFlow clients through backend routes, linking a marketing flow to real account creation.',
-    'coachflow.card_3_title': 'English and Arabic UX',
-    'coachflow.card_3_copy': 'Dashboard and mobile labels include Arabic and English strings, RTL-aware experiences, and regional details.',
-    'coachflow.card_4_title': 'Native client app',
-    'coachflow.card_4_copy': 'Expo app with secure token storage, workout player, nutrition views, progress check-ins, messages, and guarded client login.',
+    'coachflow.summary': 'One connected product for coaches to manage clients, plans, progress, messages, and daily work across a web dashboard and client app.',
+    'coachflow.ai_title': 'AI services',
+    'coachflow.ai_copy': 'Useful AI workflows summarize client check-ins and prepare Egyptian meal plans inside the product.',
+    'coachflow.bilingual_title': 'English and Arabic',
+    'coachflow.bilingual_copy': 'The dashboard and mobile experience support both languages, including right-to-left layouts.',
+    'coachflow.client_title': 'Client app',
+    'coachflow.client_copy': 'A secure Expo app gives clients workouts, nutrition, progress check-ins, and messages in one place.',
     'morebuilds.card_1_title': 'CoachFlow',
     'morebuilds.card_1_copy': 'One system for coaches to manage clients, plans, progress, messages, and daily work.',
     'morebuilds.card_2_title': '5D Fitness',
@@ -110,11 +115,12 @@ const i18n = {
     loader: 'Loading portfolio',
     swap: ['software products with AI'],
     trace: [
-      '> checkin.summarize({ client: 412 })',
-      '  ✓ 3 sessions parsed',
-      '> meal_plan.generate({ locale: "eg" })',
-      '  ✓ 7 days · 2,100 kcal',
-      '> db.write(plan) — ok'
+      '> understand the real problem',
+      '  ✓ goal and next step clarified',
+      '> connect web, mobile, and AI',
+      '  ✓ one useful product, not loose demos',
+      '> test the important journeys',
+      '  ✓ ready for real people'
     ]
   },
   ar: {
@@ -141,7 +147,7 @@ const i18n = {
     'clients.label': 'العملاء',
     'creds.label': 'المجتمع والشهادات',
     'stack.label': 'مبني بـ',
-    'console.cap': 'تتبع الوكيل · مباشر',
+    'console.cap': 'تتبع البناء مباشر',
     'profile.status': 'متاح لشغل فريلانس مختار',
     'profile.copy': 'بخطط وبصمم وببني المنتج كامل، وبشرح القرارات بوضوح، وبدعم العربي والإنجليزي، وباختبر الشغل قبل التسليم.',
     'capabilities.kicker': 'عن الشغل',
@@ -149,21 +155,26 @@ const i18n = {
     'projects.kicker': 'مشاريع مختارة',
     'projects.title': 'شغل بيحل مشكلة واضحة.',
     'projects.copy': 'مواقع وتطبيقات وأدوات بيزنس معمولة للاستخدام اليومي الحقيقي.',
-    'projects.see_all': 'شوف كل الإحدى عشر مشروع',
+    'projects.see_all': 'شوف كل السبع مشاريع',
+    'projects.lead_project': 'المشروع الرئيسي',
+    'projects.connected_project': 'مشروع متصل',
+    'projects.other_kicker': 'شغل أكتر',
+    'projects.other_title': 'مشاريع أخرى',
     'cta.open_live': 'افتح الموقع',
     'cta.read_more': 'اقرا عن المشروع',
-    'omdafit.short': 'موقع رياضي بيحوّل الزائر لمشترك.',
-    'omdafit.panel_copy': 'موقع رياضي منشور هدفه يحول الزائر لمشترك بخطط واضحة وفلو استقبال يقدر يتربط مع CoachFlow لما العميل يتقبل.',
+    'omdafit.short': 'موقع رياضي بيحوّل التسجيل المقبول لعميل داخل CoachFlow.',
+    'omdafit.panel_copy': 'موقع رياضي منشور بيشرح العرض، يستقبل بيانات المشترك، وينشئ العملاء المقبولين داخل CoachFlow.',
+    'omdafit.provisioning_title': 'إنشاء حساب العميل',
+    'omdafit.provisioning_copy': 'بعد قبول التسجيل في OmdaFit، الفلو المتصل يقدر ينشئ حساب العميل داخل CoachFlow.',
     'omdafit.live_button': 'افتح OmdaFit',
     'omdafit.contact_button': 'اعمل مشروع شبهه',
-    'coachflow.card_1_title': 'خدمات AI',
-    'coachflow.card_1_copy': 'طبقة مبنية على Anthropic لتلخيص المتابعات وتوليد وجبات مصرية مخصصة ومربوطة بفلوهات الباك إند.',
-    'coachflow.card_2_title': 'ربط إنشاء الحسابات',
-    'coachflow.card_2_copy': 'موافقة OmdaFit تقدر تنشئ عميل داخل CoachFlow من خلال الباك إند وتحوّل التسجيل لحساب حقيقي.',
-    'coachflow.card_3_title': 'تجربة عربي وإنجليزي',
-    'coachflow.card_3_copy': 'الداشبورد والموبايل فيهم عربي وإنجليزي ودعم RTL وتفاصيل مناسبة للسوق والمنطقة.',
-    'coachflow.card_4_title': 'تطبيق عميل',
-    'coachflow.card_4_copy': 'تطبيق Expo بتخزين آمن، مشغل تمرين، تغذية، متابعات، رسائل، وحماية دخول للعميل.',
+    'coachflow.summary': 'منتج واحد متصل بيساعد الكوتش يدير العملاء والخطط والتقدم والرسائل والشغل اليومي من الداشبورد وتطبيق العميل.',
+    'coachflow.ai_title': 'خدمات AI',
+    'coachflow.ai_copy': 'فلوهات ذكاء اصطناعي مفيدة بتلخص متابعات العملاء وبتجهز خطط أكل مصرية جوه المنتج.',
+    'coachflow.bilingual_title': 'عربي وإنجليزي',
+    'coachflow.bilingual_copy': 'الداشبورد وتجربة الموبايل بيدعموا اللغتين، بما فيهم التصميم من اليمين للشمال.',
+    'coachflow.client_title': 'تطبيق العميل',
+    'coachflow.client_copy': 'تطبيق Expo آمن بيجمع التمارين والتغذية ومتابعة التقدم والرسائل في مكان واحد.',
     'morebuilds.card_1_title': 'CoachFlow',
     'morebuilds.card_1_copy': 'منصة SaaS كاملة لكوتشز وصالات في المنطقة مع داشبورد Next.js وAPI بـ NestJS وداتابيز Prisma وتطبيق Expo.',
     'morebuilds.card_2_title': '5D Fitness',
@@ -217,11 +228,12 @@ const i18n = {
     loader: 'بنجهز البورتفوليو',
     swap: ['منتجات برمجية بالذكاء الاصطناعي'],
     trace: [
-      '< تلخيص المتابعة { عميل: ٤١٢ }',
-      '  ✓ ٣ جلسات',
-      '< توليد وجبات { مصر }',
-      '  ✓ ٧ أيام · ٢١٠٠ سعر',
-      '< حفظ الخطة — تم'
+      '< فهم المشكلة الحقيقية',
+      '  ✓ الهدف والخطوة الجاية واضحين',
+      '< ربط الويب والموبايل والذكاء الاصطناعي',
+      '  ✓ منتج واحد مفيد، مش تجارب منفصلة',
+      '< اختبار الرحلات المهمة',
+      '  ✓ جاهز للاستخدام الحقيقي'
     ]
   }
 };
@@ -504,6 +516,7 @@ function initPointer() {
         const r = ch.getBoundingClientRect();
         if (!pointerInHero) {
           ch.style.transform = '';
+          ch.style.color = '';
           return;
         }
         const dx = mx - (r.left + r.width / 2);
@@ -513,6 +526,11 @@ function initPointer() {
         const tx = (-dx / distance) * influence * 11;
         const ty = (-dy / distance) * influence * 8;
         ch.style.transform = `translate3d(${tx}px, ${ty}px, 0)`;
+        // Warm yellow at the edge, deepening toward orange nearest the pointer.
+        // Each glyph keeps its own distance so the colour travels through the word.
+        ch.style.color = influence > .02
+          ? `hsl(${44 - influence * 16} 91% ${62 - influence * 5}%)`
+          : '';
       });
     }
 
@@ -623,34 +641,58 @@ document.addEventListener('keydown', e => {
   applyLang(lang);
   showView(routes[location.pathname] || 'home', { instant: true });
 
+  let done = false;
+  const setProgress = value => {
+    const n = Math.max(0, Math.min(100, Math.round(value)));
+    if (count) count.textContent = n;
+    if (fill) fill.style.width = `${n}%`;
+  };
+
   const finish = () => {
+    if (done) return;
+    done = true;
+    setProgress(100);
     document.body.classList.remove('is-loading');
+    document.body.setAttribute('aria-busy', 'false');
     loader?.classList.add('is-done');
+    loader?.setAttribute('aria-hidden', 'true');
     playHero();
     startTrace();
     observeAll();
     onScrollFrame();
   };
 
-  if (reduceMotion.matches || !loader) { finish(); return; }
+  if (!loader) { finish(); return; }
 
-  // Time-based, not tick-based: a throttled timer must never strand the page
-  // behind the loader. Runs 1.2s, then finishes no matter what.
-  const DUR = 1200;
-  let done = false;
-  const end = () => { if (done) return; done = true; finish(); };
+  // Track the resources that materially change the first experience. The page
+  // is released after its stylesheet/window load, fonts, and every image in the
+  // document are ready. Errors count as settled so one missing asset cannot
+  // trap the visitor behind the loader.
+  const waitForWindow = new Promise(resolve => {
+    if (document.readyState === 'complete') resolve();
+    else addEventListener('load', resolve, { once: true });
+  });
+  const waitForFonts = document.fonts?.ready || Promise.resolve();
+  const waitForImages = $$('img').map(img => new Promise(resolve => {
+    if (img.complete) { resolve(); return; }
+    img.addEventListener('load', resolve, { once: true });
+    img.addEventListener('error', resolve, { once: true });
+  }));
+  const resources = [waitForWindow, waitForFonts, ...waitForImages];
+  let settled = 0;
+  setProgress(0);
 
-  const t0 = performance.now();
-  const frame = now => {
-    const p = Math.min(1, (now - t0) / DUR);
-    const n = Math.round(p * 100);
-    if (count) count.textContent = n;
-    if (fill) fill.style.width = n + '%';
-    if (p < 1) requestAnimationFrame(frame);
-    else setTimeout(end, 240);
-  };
-  requestAnimationFrame(frame);
+  const tracked = resources.map(resource => Promise.resolve(resource)
+    .catch(() => undefined)
+    .finally(() => {
+      settled += 1;
+      setProgress((settled / resources.length) * 96);
+    }));
 
-  // Hard ceiling — covers a backgrounded tab, a stalled font, a slow device.
-  setTimeout(end, DUR + 2000);
+  const ready = Promise.allSettled(tracked);
+  const safetyTimeout = new Promise(resolve => setTimeout(resolve, 8000));
+  const minimumDisplay = new Promise(resolve => setTimeout(resolve, reduceMotion.matches ? 0 : 450));
+
+  Promise.all([Promise.race([ready, safetyTimeout]), minimumDisplay])
+    .then(() => setTimeout(finish, reduceMotion.matches ? 0 : 180));
 })();
