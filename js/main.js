@@ -1,691 +1,656 @@
-const header = document.querySelector('[data-header]');
-const revealTargets = document.querySelectorAll('.reveal');
-const canvas = document.querySelector('[data-particles]');
-const ctx = canvas?.getContext('2d');
-const loader = document.querySelector('[data-loader]');
-const loaderCanvas = document.querySelector('[data-loader-canvas]');
-const loaderCtx = loaderCanvas?.getContext('2d');
-const loaderCount = document.querySelector('[data-loader-count]');
-const loaderLabel = document.querySelector('[data-loader-label]');
-const langToggle = document.querySelector('[data-lang-toggle]');
+/* ============================================================
+   Kareem Ahmed — portfolio
+   Single document + pushState router. No libraries.
+   ============================================================ */
+document.documentElement.classList.add('js');
 
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+const $  = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+
+/* ---------------- i18n ---------------- */
 const i18n = {
   en: {
-    'nav.contact_chip': 'get in touch',
-    'nav.menu': 'menu',
+    'nav.home': 'Home',
     'nav.projects': 'Projects',
-    'nav.services': 'Services',
+    'nav.playground': 'Playground',
+    'nav.services': 'About',
     'nav.process': 'Process',
     'nav.contact': 'Contact',
-    'hero.kicker': 'ai automation, saas engineering, arabic-ready client support',
-    'hero.title': 'Kareem',
-    'hero.lede': 'I build practical AI systems that connect prompts, APIs, dashboards, mobile apps, and real customer workflows. My work focuses on useful automation, clean product execution, and verified delivery.',
-    'hero.cta_project': 'View Projects',
-    'hero.cta_whatsapp': 'WhatsApp me',
-    'hero.signal_1_label': 'focus',
-    'hero.signal_1_value': 'AI agents + product systems',
-    'hero.signal_2_label': 'stack',
-    'hero.signal_2_value': 'Next.js, NestJS, Prisma, Expo',
-    'hero.signal_3_label': 'edge',
-    'hero.signal_3_value': 'English and Arabic workflows',
-    'profile.status': '[available]',
-    'profile.copy': 'Applied AI developer building practical automations, SaaS dashboards, and bilingual client workflows.',
-    'projects.kicker': 'selected projects',
-    'projects.title': 'Projects built as real systems, not portfolio mockups.',
-    'projects.copy': 'A production-grade build that shows applied AI, SaaS architecture, client workflows, bilingual product thinking, and live deployment discipline.',
-    'coachflow.panel_label': 'product architecture',
-    'coachflow.panel_status': 'live project',
-    'coachflow.brand_line': 'Performance coaching SaaS for real coaches and clients.',
-    'coachflow.live_button': 'Open live landing page',
-    'coachflow.app_button': 'View client app page',
-    'coachflow.arch_1': 'Next.js web dashboard',
-    'coachflow.arch_2': 'NestJS API',
-    'coachflow.arch_3': 'Prisma + PostgreSQL',
-    'coachflow.arch_4': 'Expo mobile app',
-    'coachflow.panel_copy': 'Coaches manage clients, programs, nutrition, check-ins, messages, team roles, billing, and progress. Clients use a dedicated dashboard and native mobile app for workouts, nutrition, progress photos, messages, and settings.',
-    'omdafit.panel_label': 'fitness subscription site',
-    'omdafit.panel_status': 'vercel live',
-    'omdafit.brand_line': 'A polished fitness subscription experience connected to real client onboarding.',
+    'nav.contact_chip': 'Get in touch',
+    'hero.eyebrow': "HELLO, I'M KAREEM AHMED.",
+    'hero.display_1': 'I build',
+    'hero.lede': 'I build clear websites, apps, and automations that make everyday work easier.',
+    'hero.signal_1_label': 'Focus',
+    'hero.signal_1_value': 'Useful AI products',
+    'hero.signal_2_label': 'Stack',
+    'hero.signal_2_value': 'Websites and mobile apps',
+    'hero.signal_3_label': 'Edge',
+    'hero.signal_3_value': 'Arabic and English experiences',
+    'story.statement': 'I turn complicated ideas into clear digital products people can actually use. That includes websites, mobile apps, business tools, and AI automations in English and Arabic.',
+    'story.closing': 'Simple to understand. Reliable after launch.',
+    'experience.nova_role': 'Freelance AI developer',
+    'experience.nova_period': 'Assiut, Egypt',
+    'clients.label': 'CLIENTS',
+    'creds.label': 'COMMUNITY & CREDENTIALS',
+    'stack.label': 'BUILT WITH',
+    'console.cap': 'Agent trace · live',
+    'profile.status': 'Available for selected freelance work',
+    'profile.copy': 'I plan, design, and build complete digital products. I explain decisions clearly, support Arabic and English, and test the finished work before I hand it over.',
+    'capabilities.kicker': 'ABOUT THE WORK',
+    'capabilities.title': 'From an idea to a working product.',
+    'projects.kicker': 'SELECTED PROJECTS',
+    'projects.title': 'Work that solves a clear problem.',
+    'projects.copy': 'Selected websites, apps, and business tools built for real people and daily use.',
+    'projects.see_all': 'See all eleven projects',
+    'cta.open_live': 'Open the live site',
+    'cta.read_more': 'Read about this build',
+    'omdafit.short': 'A fitness website that helps visitors understand the offer and join.',
+    'omdafit.panel_copy': 'A live fitness website focused on converting visitors into subscribers through clear plans, strong visual direction, and an onboarding flow that can connect into CoachFlow when a client is approved.',
     'omdafit.live_button': 'Open OmdaFit',
     'omdafit.contact_button': 'Discuss a similar build',
-    'omdafit.arch_1': 'Vercel production site',
-    'omdafit.arch_2': 'Plan selection flow',
-    'omdafit.arch_3': 'Approval-ready onboarding',
-    'omdafit.arch_4': 'CoachFlow handoff path',
-    'omdafit.panel_copy': 'OmdaFit is a live fitness website focused on converting visitors into subscribers through clear plans, strong visual direction, and an onboarding flow that can connect into CoachFlow when a client is approved.',
     'coachflow.card_1_title': 'AI services',
     'coachflow.card_1_copy': 'Anthropic-backed service layer for check-in summaries and custom Egyptian meal generation, connected through backend workflows rather than loose prompt demos.',
     'coachflow.card_2_title': 'Provisioning bridge',
-    'coachflow.card_2_copy': 'OmdaFit approval can provision CoachFlow clients through backend routes, linking a marketing/subscription flow to real account creation.',
+    'coachflow.card_2_copy': 'OmdaFit approval can provision CoachFlow clients through backend routes, linking a marketing flow to real account creation.',
     'coachflow.card_3_title': 'English and Arabic UX',
-    'coachflow.card_3_copy': 'Dashboard and mobile labels include Arabic/English strings, RTL-aware experiences, and regional details like Egyptian foods and MENA coaching assumptions.',
+    'coachflow.card_3_copy': 'Dashboard and mobile labels include Arabic and English strings, RTL-aware experiences, and regional details.',
     'coachflow.card_4_title': 'Native client app',
-    'coachflow.card_4_copy': 'Expo app mirrors the web client dashboard with secure token storage, workout player, nutrition views, progress check-ins, messages, and client-only login guard.',
+    'coachflow.card_4_copy': 'Expo app with secure token storage, workout player, nutrition views, progress check-ins, messages, and guarded client login.',
     'morebuilds.card_1_title': 'CoachFlow',
-    'morebuilds.card_1_copy': 'Full coaching SaaS for MENA gyms and coaches — Next.js dashboard, NestJS API, Prisma/PostgreSQL, and a native Expo client app for workouts, nutrition, check-ins, and messaging.',
+    'morebuilds.card_1_copy': 'One system for coaches to manage clients, plans, progress, messages, and daily work.',
     'morebuilds.card_2_title': '5D Fitness',
-    'morebuilds.card_2_copy': 'Gym membership platform for a real Cairo gym — Paymob checkout, instant digital membership with QR check-in, and a staff admin dashboard on Next.js + Prisma, deployed on Railway.',
+    'morebuilds.card_2_copy': 'A gym membership system with online payment, digital memberships, QR entry, and staff controls.',
     'morebuilds.card_3_title': 'ClinicBase',
-    'morebuilds.card_3_copy': 'Offline-first desktop system for a gynecology clinic — Electron + SQLite, role-based staff accounts, Excel exports, and full Arabic/English support for a clinic that runs without the internet.',
+    'morebuilds.card_3_copy': 'A clinic desktop system that keeps working without internet and supports staff in Arabic and English.',
     'morebuilds.card_4_title': 'Limit',
-    'morebuilds.card_4_copy': 'A macOS menu-bar app that reads your Claude and Codex subscription usage straight from local credentials — no sign-up, no server — with a companion Android viewer over Wi-Fi.',
+    'morebuilds.card_4_copy': 'A small Mac app that shows Claude and Codex usage at a glance, with an Android companion.',
     'morebuilds.card_5_title': 'Misk',
-    'morebuilds.card_5_copy': 'A worship companion app: on-device prayer times and Qibla, a full 604-page Mushaf reader, athkar and duas, and athan audio — no account, no backend, nothing leaves the phone.',
+    'morebuilds.card_5_copy': 'A private worship companion for prayer times, Qibla, Quran reading, athkar, duas, and athan audio.',
     'morebuilds.card_6_title': 'Rayhaan Obsidian',
-    'morebuilds.card_6_copy': 'A scroll-driven fragrance presentation site — a 300-frame image sequence choreographed against scroll position to build a dark, cinematic product story in the browser.',
-    'morebuilds.card_6_link': 'view live',
-    'services.kicker': 'what i can build',
-    'services.title': 'Applied AI systems for real business workflows.',
-    'services.copy': 'I focus on systems where AI is connected to data, product screens, notifications, and human review points.',
-    'services.card_1_title': 'AI proposal and follow-up agents',
-    'services.card_1_copy': 'Job scanning, fit scoring, proposal drafting, client-specific context, follow-up reminders, and review loops for Upwork, Fiverr, and LinkedIn pipelines.',
-    'services.card_2_title': 'Custom SaaS dashboards',
-    'services.card_2_copy': 'Role-aware dashboards with auth, database models, admin controls, billing logic, analytics, and operational tools built around the actual workflow.',
-    'services.card_3_title': 'API and automation glue',
-    'services.card_3_copy': 'Connect model APIs, CRMs, messaging, forms, Google tools, databases, and notifications into one reliable system with logging and verification.',
-    'services.card_4_title': 'Web and mobile product builds',
-    'services.card_4_copy': 'Next.js web apps, React interfaces, Expo client apps, API integration, responsive design, local persistence, and polished frontend execution.',
-    'services.card_5_title': 'Arabic client experience',
-    'services.card_5_copy': 'Arabic-facing copy, bilingual UI decisions, RTL-aware layouts, and support for clients who need local context instead of generic English-only automation.',
-    'services.card_6_title': 'Verification-first delivery',
-    'services.card_6_copy': 'Testing, browser checks, deployment checks, live alias verification, and concrete proof that the system being delivered is the one users actually see.',
-    'capabilities.kicker': 'capabilities',
-    'capabilities.title': 'From idea to working product.',
-    'capabilities.item_1_title': 'AI workflow design',
-    'capabilities.item_1_copy': 'Define what the agent should do, what humans approve, and where model output becomes product state.',
-    'capabilities.item_2_title': 'Backend and data models',
-    'capabilities.item_2_copy': 'Build APIs, database schemas, auth, queues, notifications, and admin operations around the workflow.',
-    'capabilities.item_3_title': 'Polished client-facing UI',
-    'capabilities.item_3_copy': 'Create clean web and mobile surfaces that clients can understand quickly in English or Arabic.',
-    'process.kicker': 'delivery method',
-    'process.title': 'A smooth build loop from inspection to launch.',
+    'morebuilds.card_6_copy': 'A fragrance website where scrolling moves through a cinematic visual sequence.',
+    'morebuilds.card_6_link': 'View live',
+    'services.kicker': 'WHAT I CAN BUILD',
+    'services.title': 'Useful digital products, built around real needs.',
+    'services.card_1_title': 'AI assistants and automations',
+    'services.card_1_copy': 'Save time on repeated work such as finding opportunities, preparing first drafts, organizing information, and reminding your team what needs attention.',
+    'services.card_2_title': 'Business dashboards',
+    'services.card_2_copy': 'Give staff and customers one clear place to manage accounts, payments, reports, appointments, or daily operations.',
+    'services.card_3_title': 'Connected business tools',
+    'services.card_3_copy': 'Connect forms, messages, customer records, payments, and notifications so information moves without repeated copying.',
+    'services.card_4_title': 'Websites and mobile apps',
+    'services.card_4_copy': 'Responsive websites and mobile apps with clear screens, fast everyday actions, and a consistent experience across devices.',
+    'services.card_5_title': 'Arabic and English experiences',
+    'services.card_5_copy': 'Natural Arabic and English wording, right-to-left layouts, and details that make the product feel familiar to local customers.',
+    'services.card_6_title': 'Testing and launch support',
+    'services.card_6_copy': 'I test the important journeys, check phone and desktop layouts, and confirm the live version works before calling the project finished.',
+    'certs.kicker': 'CREDENTIALS',
+    'certs.title': 'Trained on the tools I build with.',
+    'certs.gdg': 'Google Developer Group',
+    'certs.community': 'Community',
+    'process.kicker': 'DELIVERY METHOD',
+    'process.title': 'A clear build loop from inspection to launch.',
     'process.step_1_title': 'Inspect',
-    'process.step_1_copy': 'Read the current product, repo, user flow, business process, and deployment reality before proposing a solution.',
+    'process.step_1_copy': 'Understand the goal, the people using the product, and what is getting in their way.',
     'process.step_2_title': 'Design',
-    'process.step_2_copy': 'Map the workflow, data model, screens, automations, prompts, and human review points so the AI does useful work safely.',
+    'process.step_2_copy': 'Plan the clearest journey, screens, information, and decisions before building.',
     'process.step_3_title': 'Build',
-    'process.step_3_copy': 'Implement the frontend, backend, API connections, database state, auth, notifications, and model calls as one coherent product.',
+    'process.step_3_copy': 'Build the complete product and connect the parts that need to work together.',
     'process.step_4_title': 'Verify',
-    'process.step_4_copy': 'Run the app, check responsive screens, test key paths, inspect live deployments, and fix mismatches before calling the work done.',
-    'proof.kicker': 'selected proof',
-    'proof.title': 'Built around real outputs.',
-    'proof.copy': 'The strongest proof in my portfolio is not a fake number. It is the ability to move from a product idea to a functioning system with web, mobile, backend, data, AI, and verification.',
-    'proof.item_1_title': 'Full-stack scope',
-    'proof.item_1_copy': 'CoachFlow spans dashboard, API, database, client app, and deployment.',
-    'proof.item_2_title': 'AI in context',
-    'proof.item_2_copy': 'AI services sit inside check-ins, meals, automations, and user workflows.',
-    'proof.item_3_title': 'Regional fit',
-    'proof.item_3_copy': 'Arabic support, Egyptian food logic, Fawry/manual payment assumptions, and MENA coaching flows.',
-    'contact.kicker': 'freelance availability',
+    'process.step_4_copy': 'Test the important journeys on different screen sizes and confirm the live version works.',
+    'play.kicker': 'PLAYGROUND',
+    'play.title': 'Things built for the pleasure of building them.',
+    'contact.kicker': 'FREELANCE AVAILABILITY',
     'contact.title': 'Have an AI workflow that needs to become a real product?',
     'contact.copy': 'I can help with AI agents, automation pipelines, SaaS dashboards, API integrations, bilingual client flows, and prototype-to-production builds.',
     'contact.email_button': 'Email Kareem',
     'contact.whatsapp_button': 'WhatsApp',
-    'contact.call_button': 'Call',
-    'footer.copy': 'designed & built for applied AI work - 2026',
+    'footer.copy': '© 2026 Built by Kareem',
     'footer.top': 'Back to top',
-    loader: 'preparing applied ai portfolio'
+    loader: 'Loading portfolio',
+    swap: ['software products with AI'],
+    trace: [
+      '> checkin.summarize({ client: 412 })',
+      '  ✓ 3 sessions parsed',
+      '> meal_plan.generate({ locale: "eg" })',
+      '  ✓ 7 days · 2,100 kcal',
+      '> db.write(plan) — ok'
+    ]
   },
   ar: {
-    'nav.contact_chip': 'تواصل معايا',
-    'nav.menu': 'القائمة',
+    'nav.home': 'الرئيسية',
     'nav.projects': 'المشاريع',
-    'nav.services': 'الخدمات',
+    'nav.playground': 'التجارب',
+    'nav.services': 'عن الشغل',
     'nav.process': 'الطريقة',
     'nav.contact': 'تواصل',
-    'hero.kicker': 'أتمتة بالذكاء الاصطناعي، منتجات SaaS، وتجربة عربي/إنجليزي',
-    'hero.title': 'كريم',
-    'hero.lede': 'ببني أنظمة ذكاء اصطناعي عملية بتوصل بين البرومبتات، الـ APIs، الداشبوردات، تطبيقات الموبايل، وشغل العملاء الحقيقي. تركيزي إن الأتمتة تبقى مفيدة، شكلها نضيف، ومختبرة صح.',
-    'hero.cta_project': 'شوف المشاريع',
-    'hero.cta_whatsapp': 'كلمني واتساب',
+    'nav.contact_chip': 'تواصل معايا',
+    'hero.eyebrow': 'أهلاً، أنا كريم أحمد.',
+    'hero.display_1': 'أنا ببني',
+    'hero.lede': 'ببني مواقع وتطبيقات وأتمتة واضحة بتسهّل الشغل اليومي.',
     'hero.signal_1_label': 'التركيز',
-    'hero.signal_1_value': 'AI agents + أنظمة منتجات',
+    'hero.signal_1_value': 'منتجات ذكاء اصطناعي مفيدة',
     'hero.signal_2_label': 'الستاك',
-    'hero.signal_2_value': 'Next.js, NestJS, Prisma, Expo',
+    'hero.signal_2_value': 'مواقع وتطبيقات موبايل',
     'hero.signal_3_label': 'الميزة',
-    'hero.signal_3_value': 'تجارب عربي وإنجليزي',
-    'profile.status': '[متاح]',
-    'profile.copy': 'مطور AI تطبيقي ببني أتمتة عملية، داشبوردات SaaS، وتجارب عملاء بلغتين.',
+    'hero.signal_3_value': 'تجربة عربي وإنجليزي',
+    'story.statement': 'بحوّل الأفكار المعقدة لمنتجات رقمية واضحة يقدر أي شخص يستخدمها. ده يشمل المواقع وتطبيقات الموبايل وأدوات البيزنس والأتمتة بالعربي والإنجليزي.',
+    'story.closing': 'سهلة في الاستخدام. موثوقة بعد الإطلاق.',
+    'experience.nova_role': 'مطور ذكاء اصطناعي فريلانس',
+    'experience.nova_period': 'أسيوط، مصر',
+    'clients.label': 'العملاء',
+    'creds.label': 'المجتمع والشهادات',
+    'stack.label': 'مبني بـ',
+    'console.cap': 'تتبع الوكيل · مباشر',
+    'profile.status': 'متاح لشغل فريلانس مختار',
+    'profile.copy': 'بخطط وبصمم وببني المنتج كامل، وبشرح القرارات بوضوح، وبدعم العربي والإنجليزي، وباختبر الشغل قبل التسليم.',
+    'capabilities.kicker': 'عن الشغل',
+    'capabilities.title': 'من فكرة لمنتج شغال.',
     'projects.kicker': 'مشاريع مختارة',
-    'projects.title': 'مشاريع شغالة بجد، مش مجرد شكل في بورتفوليو.',
-    'projects.copy': 'مشروع منشور يوضح شغل AI تطبيقي، معمارية SaaS، فلوهات عملاء، تفكير عربي/إنجليزي، وتسليم متأكد منه.',
-    'coachflow.panel_label': 'معمارية المنتج',
-    'coachflow.panel_status': 'مشروع لايف',
-    'coachflow.brand_line': 'منصة كوتشينج للأداء مبنية لكوتشز وعملاء حقيقيين.',
-    'coachflow.live_button': 'افتح صفحة التعريف',
-    'coachflow.app_button': 'شوف صفحة تطبيق العميل',
-    'coachflow.arch_1': 'داشبورد ويب بـ Next.js',
-    'coachflow.arch_2': 'API بـ NestJS',
-    'coachflow.arch_3': 'Prisma + PostgreSQL',
-    'coachflow.arch_4': 'تطبيق موبايل بـ Expo',
-    'coachflow.panel_copy': 'الكوتش يقدر يدير العملاء، البرامج، التغذية، المتابعات، الرسائل، أدوار الفريق، الدفع، والتقدم. والعميل عنده مساحة خاصة وتطبيق موبايل للتمارين، الأكل، الصور، الرسائل، والإعدادات.',
-    'omdafit.panel_label': 'موقع اشتراكات رياضية',
-    'omdafit.panel_status': 'منشور على Vercel',
-    'omdafit.brand_line': 'تجربة اشتراك رياضي نضيفة ومتصلة بفلو استقبال عملاء حقيقي.',
+    'projects.title': 'شغل بيحل مشكلة واضحة.',
+    'projects.copy': 'مواقع وتطبيقات وأدوات بيزنس معمولة للاستخدام اليومي الحقيقي.',
+    'projects.see_all': 'شوف كل الإحدى عشر مشروع',
+    'cta.open_live': 'افتح الموقع',
+    'cta.read_more': 'اقرا عن المشروع',
+    'omdafit.short': 'موقع رياضي بيحوّل الزائر لمشترك.',
+    'omdafit.panel_copy': 'موقع رياضي منشور هدفه يحول الزائر لمشترك بخطط واضحة وفلو استقبال يقدر يتربط مع CoachFlow لما العميل يتقبل.',
     'omdafit.live_button': 'افتح OmdaFit',
     'omdafit.contact_button': 'اعمل مشروع شبهه',
-    'omdafit.arch_1': 'موقع إنتاج على Vercel',
-    'omdafit.arch_2': 'فلو اختيار الخطط',
-    'omdafit.arch_3': 'استقبال عميل بعد الموافقة',
-    'omdafit.arch_4': 'مسار تسليم لـ CoachFlow',
-    'omdafit.panel_copy': 'OmdaFit موقع رياضي منشور فعلا، هدفه يحول الزائر لمشترك من خلال خطط واضحة، شكل قوي، وفلو استقبال يقدر يتربط مع CoachFlow لما العميل يتقبل.',
-    'coachflow.card_1_title': 'ذكاء اصطناعي جوه المنتج',
-    'coachflow.card_1_copy': 'طبقة ذكاء اصطناعي مبنية على Anthropic لتلخيص المتابعات وتوليد وجبات مصرية مخصصة، ومربوطة بالباك إند بدل ما تكون مجرد تجربة برومبت.',
+    'coachflow.card_1_title': 'خدمات AI',
+    'coachflow.card_1_copy': 'طبقة مبنية على Anthropic لتلخيص المتابعات وتوليد وجبات مصرية مخصصة ومربوطة بفلوهات الباك إند.',
     'coachflow.card_2_title': 'ربط إنشاء الحسابات',
-    'coachflow.card_2_copy': 'موافقة OmdaFit تقدر تنشئ عميل داخل CoachFlow من خلال مسارات الباك إند، ففلو التسجيل بيتحول لحساب حقيقي.',
+    'coachflow.card_2_copy': 'موافقة OmdaFit تقدر تنشئ عميل داخل CoachFlow من خلال الباك إند وتحوّل التسجيل لحساب حقيقي.',
     'coachflow.card_3_title': 'تجربة عربي وإنجليزي',
-    'coachflow.card_3_copy': 'الداشبورد والموبايل فيهم نصوص عربي/إنجليزي، دعم RTL، وتفاصيل مناسبة للسوق المصري والمنطقة.',
-    'coachflow.card_4_title': 'تطبيق عميل أصلي',
-    'coachflow.card_4_copy': 'تطبيق Expo بيقدم تجربة العميل من الموبايل بتخزين آمن للتوكن، مشغل تمرين، تغذية، متابعة تقدم، رسائل، وحماية دخول مخصصة للعملاء فقط.',
-    'morebuilds.card_1_title': 'كوتش فلو',
-    'morebuilds.card_1_copy': 'منصة SaaS كاملة لكوتشز وصالات في المنطقة — داشبورد Next.js، API بـ NestJS، قاعدة بيانات Prisma/PostgreSQL، وتطبيق Expo للعميل فيه تمارين، تغذية، متابعات، ورسائل.',
-    'morebuilds.card_2_title': 'خمسة دي فيتنس',
-    'morebuilds.card_2_copy': 'منصة عضويات لصالة رياضية حقيقية في القاهرة — دفع عبر Paymob، عضوية رقمية فورية بكود QR للدخول، ولوحة تحكم للموظفين على Next.js وPrisma، منشورة على Railway.',
-    'morebuilds.card_3_title': 'كلينيك بيس',
-    'morebuilds.card_3_copy': 'نظام دسكتوب يشتغل من غير إنترنت لعيادة نسا وتوليد — Electron + SQLite، حسابات موظفين بصلاحيات، تصدير إكسل، ودعم كامل عربي/إنجليزي لعيادة محتاجة تشتغل بدون اتصال.',
-    'morebuilds.card_4_title': 'ليميت',
-    'morebuilds.card_4_copy': 'تطبيق macOS في شريط القوائم بيقرأ استهلاكك من اشتراك Claude وCodex من على جهازك مباشرة — من غير تسجيل ومن غير سيرفر — مع تطبيق أندرويد يتابع النتيجة عبر الواي فاي.',
-    'morebuilds.card_5_title': 'مسك',
-    'morebuilds.card_5_copy': 'تطبيق رفيق للعبادة — مواقيت صلاة وقبلة على الجهاز، مصحف كامل ٦٠٤ صفحة، أذكار وأدعية، وأذان صوتي — من غير حساب ومن غير باك إند، كل حاجة على الموبايل.',
-    'morebuilds.card_6_title': 'ريحان أوبسيديان',
-    'morebuilds.card_6_copy': 'موقع عرض عطر مبني على السكرول — تسلسل من ٣٠٠ صورة متزامن مع حركة السكرول عشان يحكي قصة منتج سينمائية بشكل داكن جوه المتصفح.',
+    'coachflow.card_3_copy': 'الداشبورد والموبايل فيهم عربي وإنجليزي ودعم RTL وتفاصيل مناسبة للسوق والمنطقة.',
+    'coachflow.card_4_title': 'تطبيق عميل',
+    'coachflow.card_4_copy': 'تطبيق Expo بتخزين آمن، مشغل تمرين، تغذية، متابعات، رسائل، وحماية دخول للعميل.',
+    'morebuilds.card_1_title': 'CoachFlow',
+    'morebuilds.card_1_copy': 'منصة SaaS كاملة لكوتشز وصالات في المنطقة مع داشبورد Next.js وAPI بـ NestJS وداتابيز Prisma وتطبيق Expo.',
+    'morebuilds.card_2_title': '5D Fitness',
+    'morebuilds.card_2_copy': 'منصة عضويات لصالة رياضية مع Paymob وعضوية رقمية وQR للدخول ولوحة تحكم للموظفين.',
+    'morebuilds.card_3_title': 'ClinicBase',
+    'morebuilds.card_3_copy': 'نظام Electron وSQLite يشتغل بدون إنترنت بصلاحيات موظفين وتصدير Excel ودعم عربي وإنجليزي.',
+    'morebuilds.card_4_title': 'Limit',
+    'morebuilds.card_4_copy': 'تطبيق macOS يقرأ استهلاك Claude وCodex محليًا مع تطبيق أندرويد مرافق على الواي فاي.',
+    'morebuilds.card_5_title': 'Misk',
+    'morebuilds.card_5_copy': 'رفيق عبادة خاص فيه مواقيت وقبلة ومصحف وأذكار وأدعية وأذان، وكل حاجة على الجهاز.',
+    'morebuilds.card_6_title': 'Rayhaan Obsidian',
+    'morebuilds.card_6_copy': 'عرض عطر سينمائي مبني على تسلسل ٣٠٠ صورة متحكم فيه بالسكرول.',
     'morebuilds.card_6_link': 'شوف لايف',
     'services.kicker': 'أقدر أبني إيه',
-    'services.title': 'أنظمة ذكاء اصطناعي عملية لشغل بيزنس حقيقي.',
-    'services.copy': 'بركز على أنظمة يكون فيها الذكاء الاصطناعي متوصل بالداتا، الشاشات، الإشعارات، ومراجعة البشر لما تكون مهمة.',
-    'services.card_1_title': 'وكلاء للعروض والمتابعة',
-    'services.card_1_copy': 'فحص فرص العمل، تقييم المناسبة، كتابة العروض، سياق مخصص لكل عميل، تذكير بالمتابعة، ومراجعة قبل الإرسال.',
-    'services.card_2_title': 'لوحات تحكم مخصصة',
-    'services.card_2_copy': 'لوحات تحكم بأدوار وصلاحيات، تسجيل دخول، نماذج بيانات، أدوات إدارة، منطق دفع، تحليلات، وأدوات تشغيل حقيقية.',
-    'services.card_3_title': 'ربط APIs والأتمتة',
-    'services.card_3_copy': 'ربط model APIs، CRMs، فورمز، رسائل، Google tools، قواعد بيانات، وإشعارات في نظام واحد موثوق.',
-    'services.card_4_title': 'ويب وموبايل',
-    'services.card_4_copy': 'Next.js web apps، واجهات React، تطبيقات Expo، ربط API، responsive design، وواجهة شكلها محترف.',
-    'services.card_5_title': 'تجربة عربي قوية',
-    'services.card_5_copy': 'كتابة عربي مفهومة لجيلنا، قرارات UI بلغتين، RTL مضبوط، وتجربة مناسبة لعملاء مصر والمنطقة.',
-    'services.card_6_title': 'تسليم متأكد منه',
-    'services.card_6_copy': 'اختبارات، مراجعة في المتصفح، فحص النسخة المنشورة، وتأكيد إن اللي اتعمل هو فعلا اللي المستخدم شايفه.',
-    'capabilities.kicker': 'القدرات',
-    'capabilities.title': 'من فكرة لنظام شغال.',
-    'capabilities.item_1_title': 'تصميم فلو الذكاء الاصطناعي',
-    'capabilities.item_1_copy': 'نحدد الوكيل الذكي يعمل إيه، إمتى الإنسان يراجع، وإزاي النتيجة تتحول لحالة حقيقية في المنتج.',
-    'capabilities.item_2_title': 'Backend وداتا موديل',
-    'capabilities.item_2_copy': 'بناء APIs، schemas، auth، queues، notifications، وتشغيل admin حوالين الفلو.',
-    'capabilities.item_3_title': 'واجهة عميل محترفة',
-    'capabilities.item_3_copy': 'واجهات ويب وموبايل نضيفة وسريعة الفهم، سواء العميل بيتعامل بالعربي أو الإنجليزي.',
+    'services.title': 'منتجات رقمية مفيدة، مبنية على احتياج حقيقي.',
+    'services.card_1_title': 'مساعدين بالذكاء الاصطناعي وأتمتة',
+    'services.card_1_copy': 'توفير وقت في الشغل المتكرر زي البحث وتجهيز المسودات وتنظيم المعلومات والتذكير بالمهام المهمة.',
+    'services.card_2_title': 'لوحات تحكم للبيزنس',
+    'services.card_2_copy': 'مكان واضح للموظفين والعملاء لإدارة الحسابات والدفع والتقارير والمواعيد والشغل اليومي.',
+    'services.card_3_title': 'ربط أدوات البيزنس',
+    'services.card_3_copy': 'ربط الفورمز والرسائل وبيانات العملاء والدفع والإشعارات من غير نقل يدوي متكرر.',
+    'services.card_4_title': 'مواقع وتطبيقات موبايل',
+    'services.card_4_copy': 'مواقع وتطبيقات سريعة وواضحة بتشتغل بشكل مريح على الموبايل والكمبيوتر.',
+    'services.card_5_title': 'تجربة عربي وإنجليزي',
+    'services.card_5_copy': 'كتابة طبيعية باللغتين ودعم كامل للاتجاه من اليمين للشمال وتفاصيل مناسبة للعميل المحلي.',
+    'services.card_6_title': 'اختبار ودعم الإطلاق',
+    'services.card_6_copy': 'باختبر الرحلات المهمة على أحجام شاشات مختلفة وبتأكد إن النسخة المنشورة شغالة قبل ما أعتبر المشروع خلص.',
+    'certs.kicker': 'الشهادات',
+    'certs.title': 'متدرب على الأدوات اللي ببني بيها.',
+    'certs.gdg': 'Google Developer Group',
+    'certs.community': 'مجتمع',
     'process.kicker': 'طريقة التسليم',
-    'process.title': 'فلو بناء ناعم من الفهم للانطلاق.',
+    'process.title': 'فلو بناء واضح من الفهم للانطلاق.',
     'process.step_1_title': 'أفهم',
-    'process.step_1_copy': 'أقرأ المنتج، الكود، رحلة المستخدم، البيزنس، وحقيقة الديبلاي قبل أي حل.',
+    'process.step_1_copy': 'أقرأ المنتج والكود ورحلة المستخدم والبيزنس وحقيقة الديبلاي قبل الحل.',
     'process.step_2_title': 'أصمم',
-    'process.step_2_copy': 'أرسم الفلو، الداتا، الشاشات، الأتمتة، البرومبتات، ونقط مراجعة الإنسان.',
+    'process.step_2_copy': 'أرسم الفلو والداتا والشاشات والأتمتة والبرومبتات ونقط مراجعة الإنسان.',
     'process.step_3_title': 'أبني',
-    'process.step_3_copy': 'أنفذ الفرونت، الباك، الـ API، الداتابيز، auth، notifications، وmodel calls كنظام واحد.',
+    'process.step_3_copy': 'أنفذ الفرونت والباك والـ APIs والداتا وتسجيل الدخول والإشعارات وmodel calls كمنتج واحد.',
     'process.step_4_title': 'أتحقق',
-    'process.step_4_copy': 'أشغل التطبيق، أراجع الشاشات، أختبر الفلوهات، وأتأكد من النسخة اللايف قبل ما أقول خلص.',
-    'proof.kicker': 'إثبات حقيقي',
-    'proof.title': 'الشغل مبني على نتائج حقيقية.',
-    'proof.copy': 'أقوى دليل مش رقم وهمي. الدليل إن الفكرة تتحول لنظام فيه ويب، موبايل، باك إند، داتا، ذكاء اصطناعي، وتحقق.',
-    'proof.item_1_title': 'Full-stack حقيقي',
-    'proof.item_1_copy': 'CoachFlow فيه لوحة تحكم، واجهة برمجية، قاعدة بيانات، تطبيق عميل، ونسخة منشورة.',
-    'proof.item_2_title': 'ذكاء اصطناعي في السياق',
-    'proof.item_2_copy': 'خدمات الذكاء الاصطناعي موجودة جوه المتابعات، الوجبات، الأتمتة، وفلوهات المستخدمين.',
-    'proof.item_3_title': 'مناسب للمنطقة',
-    'proof.item_3_copy': 'دعم عربي، منطق أكل مصري، طرق دفع مناسبة للسوق، وفلوهات تدريب تناسب مصر والمنطقة.',
+    'process.step_4_copy': 'أشغل التطبيق وأراجع الشاشات وأختبر الفلوهات وأفحص الديبلاي وأصلح الاختلافات.',
+    'play.kicker': 'التجارب',
+    'play.title': 'حاجات اتبنت لمتعة إنها تتبني.',
     'contact.kicker': 'متاح لفريلانس',
     'contact.title': 'عندك فلو ذكاء اصطناعي محتاج يتحول لمنتج حقيقي؟',
-    'contact.copy': 'أقدر أساعدك في وكلاء ذكاء اصطناعي، أتمتة، لوحات تحكم، ربط APIs، تجارب عميل بلغتين، وتحويل النموذج الأولي لمنتج.',
+    'contact.copy': 'أقدر أساعدك في وكلاء AI والأتمتة والداشبوردات وربط APIs وتجارب عميل بلغتين وتحويل النموذج لمنتج.',
     'contact.email_button': 'ابعت إيميل',
     'contact.whatsapp_button': 'واتساب',
-    'contact.call_button': 'اتصال',
-    'footer.copy': 'تصميم وبناء لشغل AI تطبيقي - 2026',
+    'footer.copy': '© ٢٠٢٦ بُني بواسطة كريم',
     'footer.top': 'فوق',
-    loader: 'بنجهز البورتفوليو'
+    loader: 'بنجهز البورتفوليو',
+    swap: ['منتجات برمجية بالذكاء الاصطناعي'],
+    trace: [
+      '< تلخيص المتابعة { عميل: ٤١٢ }',
+      '  ✓ ٣ جلسات',
+      '< توليد وجبات { مصر }',
+      '  ✓ ٧ أيام · ٢١٠٠ سعر',
+      '< حفظ الخطة — تم'
+    ]
   }
 };
 
-let currentLang = localStorage.getItem('portfolio_lang') || 'en';
+let lang = 'en';
 
-const applyLanguage = (lang) => {
-  currentLang = lang;
-  localStorage.setItem('portfolio_lang', lang);
+function applyLang(next) {
+  lang = next;
+  const dict = i18n[lang];
+  const rtl = lang === 'ar';
+
   document.documentElement.lang = lang;
-  document.body.dir = lang === 'ar' ? 'rtl' : 'ltr';
-  document.querySelectorAll('[data-i18n]').forEach((node) => {
-    const key = node.dataset.i18n;
-    if (i18n[lang][key]) node.textContent = i18n[lang][key];
+  document.documentElement.dir = rtl ? 'rtl' : 'ltr';
+
+  $$('[data-i18n]').forEach(el => {
+    const v = dict[el.dataset.i18n];
+    if (v) el.textContent = v;
   });
-  if (langToggle) langToggle.lastChild.nodeValue = lang === 'ar' ? ' EN' : ' AR';
-  if (loaderLabel) loaderLabel.textContent = i18n[lang].loader;
-  document.dispatchEvent(new CustomEvent('langchange', { detail: lang }));
-};
 
-document.body.classList.add('is-ready');
-applyLanguage(currentLang);
+  $$('[data-lang-dial]').forEach(b => b.classList.toggle('is-on', b.dataset.langDial === lang));
 
-const setHeaderState = () => {
-  if (!header) return;
-  header.classList.toggle('is-scrolled', window.scrollY > 12);
-};
+  // Re-split the hero line for the new language (RTL uses a wipe, not glyph spans).
+  splitHero();
+  resetSwap();
+  startTrace();
+}
 
-const revealObserver = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('is-visible');
-        revealObserver.unobserve(entry.target);
-      }
-    });
-  },
-  { rootMargin: '0px 0px -10% 0px', threshold: 0.08 }
-);
+/* ---------------- hero display ---------------- */
+function splitHero() {
+  const line = $('[data-split]');
+  if (!line) return;
+  const text = i18n[lang]['hero.display_1'];
 
-revealTargets.forEach((target, index) => {
-  target.style.transitionDelay = `${Math.min(index * 34, 240)}ms`;
-  revealObserver.observe(target);
-});
+  // Arabic is joined script — never split into per-glyph spans.
+  if (lang === 'ar') { line.textContent = text; return; }
 
-document.querySelectorAll('a[href^="#"]').forEach((link) => {
-  link.addEventListener('click', (event) => {
-    const targetId = link.getAttribute('href');
-    if (!targetId || targetId === '#') return;
-    const target = document.querySelector(targetId);
-    if (!target) return;
-    event.preventDefault();
-    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  line.textContent = '';
+  [...text].forEach((c, i) => {
+    const s = document.createElement('span');
+    s.className = 'ch';
+    s.textContent = c === ' ' ? ' ' : c;
+    s.style.animationDelay = (i * 38) + 'ms';
+    line.appendChild(s);
   });
-});
+}
 
-langToggle?.addEventListener('click', () => {
-  applyLanguage(currentLang === 'en' ? 'ar' : 'en');
-});
+function playHero() {
+  if (lang === 'ar') return;
+  $$('.hero-display .ch').forEach(c => c.classList.add('in'));
+}
 
-const particles = [];
-const pointer = { x: window.innerWidth / 2, y: window.innerHeight / 2, active: false };
-let phraseTargets = [];
-let width = 0;
-let height = 0;
-let deviceRatio = 1;
-let loadingMode = true;
-let startTime = performance.now();
-
-const resizeCanvas = (targetCanvas, targetCtx) => {
-  if (!targetCanvas || !targetCtx) return;
-  deviceRatio = Math.min(window.devicePixelRatio || 1, 2);
-  width = window.innerWidth;
-  height = window.innerHeight;
-  targetCanvas.width = Math.floor(width * deviceRatio);
-  targetCanvas.height = Math.floor(height * deviceRatio);
-  targetCanvas.style.width = `${width}px`;
-  targetCanvas.style.height = `${height}px`;
-  targetCtx.setTransform(deviceRatio, 0, 0, deviceRatio, 0, 0);
-};
-
-const seedParticles = () => {
-  const count = Math.max(900, Math.min(2000, Math.floor((window.innerWidth * window.innerHeight) / 650)));
-  particles.length = 0;
-  for (let i = 0; i < count; i += 1) {
-    const columns = Math.ceil(Math.sqrt(count * (width / Math.max(height, 1))));
-    const rows = Math.ceil(count / columns);
-    const col = i % columns;
-    const row = Math.floor(i / columns);
-    const baseX = ((col + 0.5) / columns) * width;
-    const baseY = ((row + 0.5) / rows) * height;
-    particles.push({
-      angle: (Math.PI * 2 * i) / count,
-      baseX: baseX + (Math.random() - 0.5) * 38,
-      baseY: baseY + (Math.random() - 0.5) * 38,
-      radius: 18 + (i % 11) * 3,
-      x: width * Math.random(),
-      y: height * Math.random(),
-      vx: (Math.random() - 0.5) * 0.12,
-      vy: (Math.random() - 0.5) * 0.12,
-      size: Math.random() > 0.84 ? 1.85 : 0.95,
-      alpha: 0.32 + Math.random() * 0.46
+/* ---------------- stable hero phrase ---------------- */
+function resetSwap() {
+  const box = $('[data-swap]');
+  if (!box) return;
+  const phrase = document.createElement('i');
+  phrase.className = 'on';
+  const text = i18n[lang].swap[0];
+  if (lang === 'ar') {
+    phrase.textContent = text;
+  } else {
+    let glyphIndex = 0;
+    text.split(' ').forEach((word, wordIndex) => {
+      if (wordIndex) phrase.append(' ');
+      const wordSpan = document.createElement('span');
+      wordSpan.className = 'phrase-word';
+      [...word].forEach(c => {
+        const glyph = document.createElement('span');
+        glyph.className = 'ch';
+        glyph.textContent = c;
+        glyph.style.animationDelay = `${(glyphIndex + 7) * 38}ms`;
+        wordSpan.appendChild(glyph);
+        glyphIndex += 1;
+      });
+      phrase.appendChild(wordSpan);
     });
   }
-};
+  box.replaceChildren(phrase);
+}
 
-// The footer name, spelled by the converging dots — cycles in EN or AR.
-// English reads: "Kareem is applied AI developer".
-// Arabic must follow Arabic word order: "كريم هو مطوّر ذكاء اصطناعي تطبيقي"
-// (Kareem is a developer of applied AI), so the cycle order differs.
-const NAME_WORDS = {
-  en: ['KAREEM', 'IS', 'APPLIED', 'AI', 'DEVELOPER'],
-  ar: ['كريم', 'هو', 'مطوّر', 'ذكاء اصطناعي', 'تطبيقي']
-};
+/* ---------------- console trace ---------------- */
+let traceTimer = null;
+function startTrace() {
+  const out = $('[data-trace]');
+  const bar = $('[data-trace-bar]');
+  if (!out) return;
+  clearTimeout(traceTimer);
+  const lines = i18n[lang].trace;
 
-const buildPhraseTargets = () => {
-  const lang = currentLang === 'ar' ? 'ar' : 'en';
-  const phrases = NAME_WORDS[lang];
-  const family = lang === 'ar' ? 'Cairo' : 'Inter';
-  const offscreen = document.createElement('canvas');
-  const offCtx = offscreen.getContext('2d');
-  if (!offCtx) return;
-
-  // Pick one font size so the WIDEST word still fits the field, then use it
-  // for every word — guarantees DEVELOPER / ذكاء اصطناعي are never clipped.
-  const maxW = width * 0.84;
-  let fontSize = Math.min(186, Math.max(56, height * 0.5));
-  let widest = 0;
-  phrases.forEach((p) => {
-    offCtx.font = `800 ${fontSize}px ${family}, Arial, sans-serif`;
-    widest = Math.max(widest, offCtx.measureText(p).width);
-  });
-  if (widest > maxW) fontSize = Math.max(46, fontSize * (maxW / widest));
-
-  offscreen.width = Math.max(720, Math.floor(width));
-  offscreen.height = Math.max(320, Math.floor(fontSize * 1.8));
-  const cx = offscreen.width / 2;
-  const cy = offscreen.height / 2;
-  // tighter sampling step → denser, more legible glyphs
-  const step = Math.max(3, Math.floor(fontSize / 34));
-
-  phraseTargets = phrases.map((phrase) => {
-    offCtx.clearRect(0, 0, offscreen.width, offscreen.height);
-    offCtx.fillStyle = '#000';
-    offCtx.textAlign = 'center';
-    offCtx.textBaseline = 'middle';
-    offCtx.font = `800 ${fontSize}px ${family}, Arial, sans-serif`;
-    offCtx.fillText(phrase, cx, cy);
-
-    const image = offCtx.getImageData(0, 0, offscreen.width, offscreen.height).data;
-    const points = [];
-    for (let y = 0; y < offscreen.height; y += step) {
-      for (let x = 0; x < offscreen.width; x += step) {
-        if (image[(y * offscreen.width + x) * 4 + 3] > 80) {
-          points.push({
-            x: width / 2 + (x - cx),
-            y: height * 0.48 + (y - cy)
-          });
-        }
-      }
-    }
-    return points;
-  });
-};
-
-const resizeAll = () => {
-  resizeCanvas(canvas, ctx);
-  resizeCanvas(loaderCanvas, loaderCtx);
-  seedParticles();
-  buildPhraseTargets();
-};
-
-const aiShapeTarget = (index, t) => {
-  if (phraseTargets.length) {
-    const PERIOD = 2900;
-    const HOLD = 0.62; // fraction of each cycle the word stays crisp and readable
-    const phraseIndex = Math.floor(t / PERIOD) % phraseTargets.length;
-    const nextPhraseIndex = (phraseIndex + 1) % phraseTargets.length;
-    const local = (t % PERIOD) / PERIOD;
-    const eased = local < HOLD ? 0 : (local - HOLD) / (1 - HOLD);
-    const morph = (1 - Math.cos(eased * Math.PI)) / 2;
-    const current = phraseTargets[phraseIndex];
-    const next = phraseTargets[nextPhraseIndex];
-    // spread particles proportionally across the whole word so every glyph
-    // is filled even when there are more sample points than particles
-    const total = particles.length || 1;
-    const frac = (index % total) / total;
-    const a = current[Math.floor(frac * current.length) % current.length];
-    const b = next[Math.floor(frac * next.length) % next.length];
-    const breathe = Math.sin(t * 0.0014 + index * 0.27) * 3;
-    if (a && b) {
-      return {
-        x: a.x * (1 - morph) + b.x * morph + breathe,
-        y: a.y * (1 - morph) + b.y * morph + Math.cos(t * 0.001 + index) * 3
-      };
-    }
+  if (reduceMotion.matches) {
+    out.innerHTML = lines.map(l => `<div>${l}</div>`).join('');
+    if (bar) bar.style.width = '100%';
+    return;
   }
 
-  const cx = width / 2;
-  const cy = height * 0.5;
-  const scale = Math.min(width, height) / 520;
-  const group = index % 12;
-  const local = (Math.floor(index / 12) % 64) / 63;
-  const jitter = Math.sin(t * 0.0014 + index) * 4;
+  let li = 0, ci = 0;
+  out.innerHTML = '';
+  let row = document.createElement('div');
+  out.appendChild(row);
 
-  if (group < 5) {
-    const side = group < 2 ? -1 : group < 4 ? 1 : 0;
-    if (side === 0) {
-      return {
-        x: cx - 150 * scale + (local - 0.5) * 116 * scale,
-        y: cy + 24 * scale + jitter
-      };
-    }
-    return {
-      x: cx - 190 * scale + side * local * 86 * scale,
-      y: cy + 110 * scale - local * 220 * scale + jitter
-    };
-  }
-
-  if (group < 8) {
-    return {
-      x: cx + 38 * scale + (group - 6) * 26 * scale + jitter,
-      y: cy + 112 * scale - local * 224 * scale
-    };
-  }
-
-  const nodes = [
-    [-26, -96], [42, -70], [116, -98],
-    [-8, -8], [74, 14], [146, -18],
-    [-38, 88], [48, 94], [128, 70]
-  ];
-  const node = nodes[index % nodes.length];
-  const orbit = 14 + (index % 5) * 4;
-  const angle = t * 0.001 + index * 0.9;
-  return {
-    x: cx + (node[0] * scale) + Math.cos(angle) * orbit * scale,
-    y: cy + (node[1] * scale) + Math.sin(angle) * orbit * scale
-  };
-};
-
-const applyPointerForce = (x, y, t, mode) => {
-  if (!pointer.active) return { x, y, intensity: 0 };
-  const dx = x - pointer.x;
-  const dy = y - pointer.y;
-  const dist = Math.sqrt(dx * dx + dy * dy) || 1;
-  const radius = mode === 'loader' ? 300 : 260;
-  if (dist > radius) return { x, y, intensity: 0 };
-
-  const strength = 1 - dist / radius;
-  const angle = Math.atan2(dy, dx) + Math.PI / 2;
-  const repel = mode === 'loader' ? 58 : 44;
-  const swirl = mode === 'loader' ? 44 : 30;
-  const pulse = 0.7 + Math.sin(t * 0.004) * 0.3;
-
-  return {
-    x: x + (dx / dist) * repel * strength + Math.cos(angle) * swirl * strength * pulse,
-    y: y + (dy / dist) * repel * strength + Math.sin(angle) * swirl * strength * pulse,
-    intensity: strength
-  };
-};
-
-const drawPattern = (targetCtx, t, mode = 'site') => {
-  if (!targetCtx) return;
-  targetCtx.clearRect(0, 0, width, height);
-  const scrollFade = mode === 'loader' ? 1 : 0.76;
-  const docHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight, height);
-  const bottomDistance = docHeight - (window.scrollY + height);
-  const shapeMix = mode === 'site' && !loadingMode ? Math.max(0, Math.min(1, 1 - bottomDistance / 1200)) : 0;
-  const cursorLinks = [];
-  const shapeLinks = [];
-
-  particles.forEach((point, index) => {
-    let x;
-    let y;
-    if (mode === 'loader' || loadingMode) {
-      const wave = t * 0.0012 + index * 0.21;
-      const sweep = Math.sin(t * 0.00055 + point.baseY * 0.01) * 22;
-      x = point.baseX + Math.cos(point.angle + t * 0.0014) * point.radius + sweep;
-      y = point.baseY + Math.sin(point.angle * 1.7 + t * 0.0011) * point.radius + Math.cos(wave) * 18;
-    } else {
-      point.x += point.vx + Math.sin(t * 0.001 + index) * 0.018;
-      point.y += point.vy + Math.cos(t * 0.0012 + index) * 0.018;
-      if (point.x < width * 0.1 || point.x > width * 0.9) point.vx *= -1;
-      if (point.y < height * 0.12 || point.y > height * 0.82) point.vy *= -1;
-      x = point.x;
-      y = point.y;
-    }
-
-    if (shapeMix > 0) {
-      const target = aiShapeTarget(index, t);
-      x = x * (1 - shapeMix) + target.x * shapeMix;
-      y = y * (1 - shapeMix) + target.y * shapeMix;
-    }
-
-    const pointerResult = applyPointerForce(x, y, t, mode);
-    x = pointerResult.x;
-    y = pointerResult.y;
-    if (pointerResult.intensity > 0.32 && cursorLinks.length < 44) cursorLinks.push({ x, y, a: pointerResult.intensity });
-    if (shapeMix > 0.45 && index % 7 === 0 && shapeLinks.length < 90) shapeLinks.push({ x, y, a: shapeMix });
-
-    targetCtx.beginPath();
-    targetCtx.arc(x, y, point.size + shapeMix * 1.1 + pointerResult.intensity * 1.2, 0, Math.PI * 2);
-    targetCtx.fillStyle = `rgba(16, 16, 16, ${Math.min(0.9, (point.alpha + shapeMix * 0.34 + pointerResult.intensity * 0.24) * scrollFade)})`;
-    targetCtx.fill();
-  });
-
-  if (pointer.active && cursorLinks.length > 2) {
-    targetCtx.lineWidth = mode === 'loader' ? 1.1 : 0.8;
-    cursorLinks.slice(0, 24).forEach((point, index) => {
-      const next = cursorLinks[(index + 5) % cursorLinks.length];
-      targetCtx.beginPath();
-      targetCtx.moveTo(point.x, point.y);
-      targetCtx.lineTo(next.x, next.y);
-      targetCtx.strokeStyle = `rgba(16, 16, 16, ${Math.min(0.22, point.a * 0.16)})`;
-      targetCtx.stroke();
-    });
-  }
-
-  if (shapeLinks.length > 4) {
-    targetCtx.lineWidth = 0.7;
-    shapeLinks.forEach((point, index) => {
-      const next = shapeLinks[(index + 3) % shapeLinks.length];
-      const dx = point.x - next.x;
-      const dy = point.y - next.y;
-      if (Math.sqrt(dx * dx + dy * dy) > 130) return;
-      targetCtx.beginPath();
-      targetCtx.moveTo(point.x, point.y);
-      targetCtx.lineTo(next.x, next.y);
-      targetCtx.strokeStyle = `rgba(16, 16, 16, ${0.08 * point.a})`;
-      targetCtx.stroke();
-    });
-  }
-};
-
-const animateParticles = (time) => {
-  drawPattern(ctx, time, 'site');
-  if (loader && !loader.classList.contains('is-hidden')) drawPattern(loaderCtx, time, 'loader');
-  requestAnimationFrame(animateParticles);
-};
-
-const runLoader = () => {
-  const duration = 2350;
-  const tick = (time) => {
-    const progress = Math.min(1, (time - startTime) / duration);
-    const eased = 1 - Math.pow(1 - progress, 3);
-    const value = Math.round(eased * 100);
-    if (loaderCount) loaderCount.textContent = String(value);
-    if (progress < 1) {
-      requestAnimationFrame(tick);
+  const tick = () => {
+    if (li >= lines.length) {
+      traceTimer = setTimeout(() => { startTrace(); }, 2600);
       return;
     }
-    loadingMode = false;
-    loader?.classList.add('is-hidden');
-    document.body.classList.remove('is-loading');
-    setTimeout(() => loader?.remove(), 900);
-  };
-  requestAnimationFrame(tick);
-};
+    const line = lines[li];
+    row.textContent = line.slice(0, ++ci);
+    if (bar) bar.style.width = (((li + ci / line.length) / lines.length) * 100) + '%';
 
-setHeaderState();
-window.addEventListener('scroll', setHeaderState, { passive: true });
-window.addEventListener('resize', resizeAll);
-window.addEventListener('pointermove', (event) => {
-  pointer.x = event.clientX;
-  pointer.y = event.clientY;
-  pointer.active = true;
-}, { passive: true });
-window.addEventListener('pointerleave', () => {
-  pointer.active = false;
-});
-resizeAll();
-requestAnimationFrame(animateParticles);
-runLoader();
-
-/* ── Rebuild the footer name cloud when the language flips ────── */
-document.addEventListener('langchange', () => {
-  buildPhraseTargets();
-});
-
-/* ── Typed spine down the left margin ────────────────────────── */
-(() => {
-  const spine = document.querySelector('[data-spine]');
-  if (!spine) return;
-
-  const LINES = {
-    ar: 'كريم أحمد · مطوّر ذكاء اصطناعي تطبيقي',
-    en: 'kareem ahmed · applied ai developer'
-  };
-  let LINE = LINES[currentLang === 'ar' ? 'ar' : 'en'];
-  const accentWords = ['applied', 'ai', 'ذكاء', 'اصطناعي'];
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  // Shrink the type until the whole phrase fits the column — never cut mid-word.
-  const fitToColumn = () => {
-    let size = 12;
-    spine.style.fontSize = `${size}px`;
-    let guard = 0;
-    while (spine.scrollHeight > spine.clientHeight && size > 8 && guard < 12) {
-      size -= 0.5;
-      spine.style.fontSize = `${size}px`;
-      guard += 1;
+    if (ci >= line.length) {
+      if (line.includes('✓') || line.includes('ok') || line.includes('تم')) row.className = 'ok';
+      li++; ci = 0;
+      if (out.children.length > 4) out.removeChild(out.firstChild);
+      row = document.createElement('div');
+      out.appendChild(row);
+      traceTimer = setTimeout(tick, 420);
+    } else {
+      traceTimer = setTimeout(tick, 26);
     }
   };
+  tick();
+}
 
-  let chars = [];
-  let caret = null;
-  let revealed = -1;
+/* ---------------- router ---------------- */
+const routes = { '/': 'home', '/work': 'work', '/about': 'about', '/playground': 'playground' };
 
-  // Rebuilt whenever the language flips, so the spine matches the active language.
-  const buildLine = () => {
-    LINE = LINES[currentLang === 'ar' ? 'ar' : 'en'];
-    spine.replaceChildren();
-    let wordStart = 0;
-    chars = [...LINE].map((ch, i) => {
-    const span = document.createElement('span');
-    span.textContent = ch === ' ' ? ' ' : ch;
-    if (ch === ' ' || ch === '—') wordStart = i + 1;
-    const word = LINE.slice(wordStart).split(/[\s—]/)[0];
-    if (accentWords.includes(word.toLowerCase())) span.dataset.accent = '1';
-    return span;
+function showView(name, { instant = false } = {}) {
+  const curtain = $('[data-curtain]');
+  const swapNow = () => {
+    $$('.view').forEach(v => { v.hidden = v.dataset.view !== name; });
+    $$('.nav-links a').forEach(a => {
+      a.classList.toggle('is-active', routes[new URL(a.href, location.origin).pathname] === name);
     });
-    chars.forEach((c) => spine.appendChild(c));
-    caret = document.createElement('span');
-    caret.className = 'sp-caret';
-    spine.appendChild(caret);
-    fitToColumn();
-    revealed = -1;
-    update();
+    window.scrollTo(0, 0);
+    observeAll();
+    if (name === 'home') { splitHero(); playHero(); startTrace(); }
   };
 
-  const update = () => {
-    const max = document.documentElement.scrollHeight - window.innerHeight;
-    const progress = max > 0 ? Math.min(1, window.scrollY / max) : 1;
-    const count = reduceMotion ? chars.length : Math.round(progress * chars.length);
-    if (count === revealed) return;
-    revealed = count;
-    chars.forEach((span, i) => {
-      const on = i < count;
-      span.classList.toggle('sp-on', on);
-      span.classList.toggle('sp-accent', on && span.dataset.accent === '1');
+  if (instant || reduceMotion.matches || !curtain) { swapNow(); return; }
+
+  curtain.className = 'curtain is-in';
+  setTimeout(() => {
+    swapNow();
+    curtain.className = 'curtain is-out';
+    setTimeout(() => { curtain.className = 'curtain'; }, 520);
+  }, 500);
+}
+
+function navigate(path, push = true) {
+  const name = routes[path] || 'home';
+  if (push) history.pushState({ path }, '', path);
+  showView(name);
+}
+
+document.addEventListener('click', e => {
+  const a = e.target.closest('[data-link]');
+  if (!a) return;
+  const path = new URL(a.href, location.origin).pathname;
+  if (!(path in routes)) return;
+  e.preventDefault();
+  if (path === location.pathname) { window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
+  navigate(path);
+});
+
+window.addEventListener('popstate', () => {
+  showView(routes[location.pathname] || 'home', { instant: true });
+});
+
+/* ---------------- reveal observer ---------------- */
+let io = null;
+function observeAll() {
+  if (io) io.disconnect();
+  io = new IntersectionObserver(entries => {
+    entries.forEach((en, i) => {
+      if (!en.isIntersecting) return;
+      setTimeout(() => en.target.classList.add('in'), i * 70);
+      io.unobserve(en.target);
     });
-    if (caret) caret.style.opacity = count >= chars.length ? '0' : '1';
+  }, { rootMargin: '0px 0px -12% 0px' });
+
+  $$('.card, .rv').forEach(el => {
+    if (el.closest('.view[hidden]')) return;
+    io.observe(el);
+  });
+}
+
+/* ---------------- scroll loop ---------------- */
+let sy = 0, ticking = false;
+function onScrollFrame() {
+  ticking = false;
+  if (reduceMotion.matches) return;
+
+  // Gentle scroll depth. Pointer movement never changes the sky.
+  const sun = $('.sun'), moon = $('.moon');
+  const p = Math.min(sy / (window.innerHeight || 1), 1);
+  if (sun)  sun.style.setProperty('--sy', `${p * 120}px`);
+  if (moon) moon.style.setProperty('--sy', `${p * 120}px`);
+  $$('.cloud-layer').forEach((c, i) => {
+    c.style.setProperty('--sx', `${p * (i % 2 ? -160 : 190)}px`);
+    c.style.setProperty('--sy', `${p * 40}px`);
+  });
+
+  // plane along its path
+  const sec = $('.plane-section');
+  const plane = $('[data-plane]');
+  const trail = $('[data-trail]');
+  if (sec && plane && !$('.view[data-view="work"]').hidden) {
+    const r = sec.getBoundingClientRect();
+    const prog = Math.max(0, Math.min(1, (window.innerHeight - r.top) / (r.height + window.innerHeight)));
+    plane.style.offsetDistance = (prog * 100) + '%';
+    if (trail) {
+      const len = trail.getTotalLength();
+      trail.style.strokeDasharray = `${len}`;
+      trail.style.strokeDashoffset = `${len * (1 - prog)}`;
+    }
+  }
+}
+window.addEventListener('scroll', () => {
+  sy = window.scrollY;
+  if (!ticking) { ticking = true; requestAnimationFrame(onScrollFrame); }
+}, { passive: true });
+
+/* ---------------- pointer: cursor, sky, type ----------------
+   Fine pointers only. Touch devices keep the native behaviour. */
+const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+
+function initPointer() {
+  if (!finePointer.matches || reduceMotion.matches) return;
+
+  const dot = $('[data-cursor]');
+  const label = $('[data-cursor-label]');
+  if (!dot) return;
+  document.documentElement.classList.add('cursor-on');
+
+  let mx = innerWidth / 2, my = innerHeight / 2;   // target
+  let cx = mx, cy = my;                            // eased
+  let raf = null;
+
+  const LINK_SEL = 'a, button, [data-link], [data-contact-open], [data-menu-open], .dial, .card';
+
+  addEventListener('pointermove', e => {
+    mx = e.clientX; my = e.clientY;
+    const hit = e.target.closest(LINK_SEL);
+    dot.classList.toggle('is-link', !!hit);
+    if (label) {
+      const l = !hit ? '' :
+        hit.matches('.dial') ? (hit.dataset.langDial === 'ar' ? 'ع' : 'EN') :
+        hit.matches('.card') ? 'VIEW' :
+        hit.hasAttribute('data-contact-open') ? 'TALK' : 'GO';
+      label.textContent = l;
+    }
+    // Give the cursor a light edge over the darker hero sky.
+    dot.classList.toggle('on-sky', !!e.target.closest('.hero'));
+    if (!raf) raf = requestAnimationFrame(loop);
+  }, { passive: true });
+
+  addEventListener('pointerdown', () => dot.classList.add('is-down'));
+  addEventListener('pointerup',   () => dot.classList.remove('is-down'));
+  addEventListener('pointerleave', () => { dot.style.opacity = '0'; });
+  addEventListener('pointerenter', () => { dot.style.opacity = '1'; });
+
+  const chars = () => $$('.hero-display .ch');
+
+  function loop() {
+    raf = null;
+    // cursor easing
+    cx += (mx - cx) * 0.22;
+    cy += (my - cy) * 0.22;
+    dot.style.transform = `translate3d(${cx}px, ${cy}px, 0) translate(-50%, -50%)`;
+
+    // The sky moves on its own. Only the headline responds to the pointer.
+    const hero = $('.hero');
+    if (hero && !$('.view[data-view="home"]').hidden) {
+      const hr = hero.getBoundingClientRect();
+      const pointerInHero = mx >= hr.left && mx <= hr.right && my >= hr.top && my <= hr.bottom;
+
+      // Nearby letters make a small, bounded movement away from the pointer.
+      // This feels alive without stretching the words or changing them on scroll.
+      if (!document.body.classList.contains('is-loading')) chars().forEach(ch => {
+        const r = ch.getBoundingClientRect();
+        if (!pointerInHero) {
+          ch.style.transform = '';
+          return;
+        }
+        const dx = mx - (r.left + r.width / 2);
+        const dy = my - (r.top + r.height / 2);
+        const distance = Math.hypot(dx, dy) || 1;
+        const influence = Math.max(0, 1 - distance / 260);
+        const tx = (-dx / distance) * influence * 11;
+        const ty = (-dy / distance) * influence * 8;
+        ch.style.transform = `translate3d(${tx}px, ${ty}px, 0)`;
+      });
+    }
+
+    if (Math.abs(mx - cx) > .3 || Math.abs(my - cy) > .3) raf = requestAnimationFrame(loop);
+  }
+  loop();
+}
+initPointer();
+
+/* ---------------- theme ---------------- */
+$('[data-theme-toggle]')?.addEventListener('click', () => {
+  const night = document.documentElement.dataset.theme === 'night';
+  document.documentElement.dataset.theme = night ? 'day' : 'night';
+  $('[data-theme-toggle]').setAttribute('aria-label', night ? 'Switch to night' : 'Switch to day');
+});
+
+/* ---------------- language dials ---------------- */
+$$('[data-lang-dial]').forEach(b => {
+  b.addEventListener('click', () => applyLang(b.dataset.langDial));
+});
+
+/* ---------------- accordion ---------------- */
+document.addEventListener('click', e => {
+  const btn = e.target.closest('.acc-btn');
+  if (!btn) return;
+  const item = btn.closest('[data-acc-item]');
+  const open = item.classList.contains('is-open');
+  $$('[data-acc-item]').forEach(i => {
+    i.classList.remove('is-open');
+    i.querySelector('.acc-btn')?.setAttribute('aria-expanded', 'false');
+  });
+  if (!open) { item.classList.add('is-open'); btn.setAttribute('aria-expanded', 'true'); }
+});
+
+/* ---------------- mobile menu ---------------- */
+const menu = $('[data-menu]');
+const burger = $('[data-menu-open]');
+let menuReturnFocus = null;
+function openMenu() {
+  menuReturnFocus = document.activeElement;
+  menu.hidden = false;
+  menu.setAttribute('aria-hidden', 'false');
+  requestAnimationFrame(() => menu.classList.add('in'));
+  burger?.setAttribute('aria-expanded', 'true');
+  menu.querySelector('.menu-close')?.focus();
+}
+function closeMenu() {
+  menu.classList.remove('in');
+  burger?.setAttribute('aria-expanded', 'false');
+  menu.setAttribute('aria-hidden', 'true');
+  setTimeout(() => { menu.hidden = true; menuReturnFocus?.focus(); }, 420);
+}
+document.addEventListener('click', e => {
+  if (e.target.closest('[data-menu-open]')) openMenu();
+  else if (e.target.closest('[data-menu-close]')) closeMenu();
+  // Navigating from inside the menu should also dismiss it.
+  else if (e.target.closest('[data-menu-link]')) closeMenu();
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && menu && !menu.hidden) closeMenu();
+});
+
+/* ---------------- contact drawer ---------------- */
+const drawer = $('[data-drawer]'), scrim = $('[data-scrim]');
+let drawerReturnFocus = null;
+function openDrawer() {
+  drawerReturnFocus = document.activeElement;
+  drawer.hidden = false; scrim.hidden = false;
+  drawer.setAttribute('aria-hidden', 'false');
+  requestAnimationFrame(() => { drawer.classList.add('in'); scrim.classList.add('in'); });
+  drawer.querySelector('.drawer-close')?.focus();
+}
+function closeDrawer() {
+  drawer.classList.remove('in'); scrim.classList.remove('in');
+  drawer.setAttribute('aria-hidden', 'true');
+  setTimeout(() => { drawer.hidden = true; scrim.hidden = true; drawerReturnFocus?.focus(); }, 520);
+}
+document.addEventListener('click', e => {
+  if (e.target.closest('[data-contact-open]')) {
+    // The drawer can be opened from inside the mobile menu; dismiss it first
+    // so the two overlays never stack.
+    if (menu && !menu.hidden) closeMenu();
+    openDrawer();
+  }
+  if (e.target.closest('[data-contact-close]') || e.target === scrim) closeDrawer();
+});
+
+/* ---------------- back to top ---------------- */
+document.addEventListener('click', e => {
+  if (!e.target.closest('[data-to-top]')) return;
+  window.scrollTo({ top: 0, behavior: reduceMotion.matches ? 'auto' : 'smooth' });
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && drawer && !drawer.hidden) closeDrawer();
+});
+
+/* ---------------- loader ---------------- */
+(function boot() {
+  const loader = $('[data-loader]');
+  const count  = $('[data-loader-count]');
+  const fill   = $('[data-loader-fill]');
+  const label  = $('[data-loader-label]');
+  if (label) label.textContent = i18n[lang].loader;
+
+  // Apply the dictionary on first paint too, not only on a language change.
+  // The markup carries English as a no-JS fallback, and the two silently drift
+  // apart otherwise.
+  applyLang(lang);
+  showView(routes[location.pathname] || 'home', { instant: true });
+
+  const finish = () => {
+    document.body.classList.remove('is-loading');
+    loader?.classList.add('is-done');
+    playHero();
+    startTrace();
+    observeAll();
+    onScrollFrame();
   };
 
-  buildLine();
-  window.addEventListener('scroll', update, { passive: true });
-  window.addEventListener('resize', () => { fitToColumn(); update(); });
-  document.addEventListener('langchange', buildLine);
+  if (reduceMotion.matches || !loader) { finish(); return; }
+
+  // Time-based, not tick-based: a throttled timer must never strand the page
+  // behind the loader. Runs 1.2s, then finishes no matter what.
+  const DUR = 1200;
+  let done = false;
+  const end = () => { if (done) return; done = true; finish(); };
+
+  const t0 = performance.now();
+  const frame = now => {
+    const p = Math.min(1, (now - t0) / DUR);
+    const n = Math.round(p * 100);
+    if (count) count.textContent = n;
+    if (fill) fill.style.width = n + '%';
+    if (p < 1) requestAnimationFrame(frame);
+    else setTimeout(end, 240);
+  };
+  requestAnimationFrame(frame);
+
+  // Hard ceiling — covers a backgrounded tab, a stalled font, a slow device.
+  setTimeout(end, DUR + 2000);
 })();

@@ -3,325 +3,473 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Kareem Ahmed portfolio - Applied AI engineer building AI automations, SaaS dashboards, APIs, and Arabic-ready client systems.">
-  <title>Kareem</title>
+  <meta name="description" content="Kareem Ahmed — Applied AI Engineer building automations, SaaS products, APIs, and Arabic-ready client systems.">
+  <meta name="theme-color" content="#FFF9F1">
+  <title>Kareem Ahmed — Applied AI Engineer</title>
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <link rel="apple-touch-icon" href="assets/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=8">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Space+Grotesk:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&family=IBM+Plex+Sans+Arabic:wght@300;400;500;700&family=Aref+Ruqaa:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=12">
 </head>
 <body class="is-loading">
-  <div class="loader" data-loader aria-label="Loading portfolio">
-    <canvas class="loader-canvas" data-loader-canvas aria-hidden="true"></canvas>
-    <div class="loader-shell">
-      <div class="window-controls" aria-hidden="true">
-        <span class="red"></span>
-        <span class="yellow"></span>
-        <span class="green"></span>
-      </div>
-      <p data-loader-label>preparing applied ai portfolio</p>
+<a class="skip-link" href="#app">Skip to content</a>
+
+<!-- pointer -->
+<div class="cursor" data-cursor aria-hidden="true"><span class="cursor-label" data-cursor-label></span></div>
+
+<!-- grain -->
+<svg class="grain" aria-hidden="true"><filter id="grainFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3"/></filter><rect width="100%" height="100%" filter="url(#grainFilter)"/></svg>
+
+<!-- loader -->
+<div class="loader" data-loader aria-label="Loading portfolio" aria-live="polite">
+  <div class="loader-inner">
+    <span class="loader-mark">KA</span>
+    <div class="loader-bar"><i data-loader-fill></i></div>
+    <div class="loader-meta">
+      <span data-loader-label>Loading portfolio</span>
       <strong><span data-loader-count>0</span>%</strong>
     </div>
   </div>
+</div>
 
-  <canvas class="particle-field" data-particles aria-hidden="true"></canvas>
+<!-- route curtain -->
+<div class="curtain" data-curtain aria-hidden="true"><span></span></div>
 
-  <div class="typed-spine" data-spine aria-hidden="true"></div>
+<!-- nav -->
+<div class="nav-place">
+  <p class="nav-loc"><span class="pin" aria-hidden="true"></span>ASSIUT, EG</p>
+  <nav class="nav-pill" data-nav aria-label="Main">
+    <a class="nav-avatar" href="/" data-link aria-label="Home"><img src="assets/kareem-hero-v2.jpg" alt=""></a>
+    <div class="nav-links">
+      <a href="/work" data-link data-i18n="nav.projects">Projects</a>
+      <a href="/about" data-link data-i18n="nav.services">Services</a>
+      <a href="/playground" data-link data-i18n="nav.playground">Playground</a>
+    </div>
+    <button class="nav-cta" type="button" data-contact-open>
+      <span class="nav-cta-ico" aria-hidden="true"></span>
+      <span data-i18n="nav.contact_chip">Get in touch</span>
+    </button>
+    <button class="nav-burger" type="button" data-menu-open aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+      <span aria-hidden="true"></span>
+    </button>
+  </nav>
+  <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to night">
+    <span class="tt-track"><span class="tt-thumb"></span></span>
+  </button>
+</div>
 
-  <header class="site-header" data-header>
-    <a class="contact-chip" href="mailto:official.kareem.ahmed@gmail.com">
-      <span></span><em data-i18n="nav.contact_chip">get in touch</em>
-    </a>
-    <a class="brand" href="#top" aria-label="Kareem Ahmed home">
-      <span class="brand-mark">[ ]</span>
-      <span data-i18n="nav.menu">menu</span>
-    </a>
-    <nav class="nav-links" aria-label="Main navigation">
-      <a href="#projects" data-i18n="nav.projects">Projects</a>
-      <a href="#services" data-i18n="nav.services">Services</a>
-      <a href="#process" data-i18n="nav.process">Process</a>
-      <a href="#contact" data-i18n="nav.contact">Contact</a>
-    </nav>
-    <button class="header-cta" type="button" data-lang-toggle aria-label="Switch language">AR</button>
-  </header>
+<main id="app">
 
-  <main id="top">
-    <section class="hero section-band">
-      <div class="hero-copy reveal">
-        <p class="mono-line" data-i18n="hero.kicker">ai automation, saas engineering, arabic-ready client support</p>
-        <h1 data-i18n="hero.title">Kareem</h1>
-        <p class="hero-lede" data-i18n="hero.lede">
-          I build practical AI systems that connect prompts, APIs, dashboards, mobile apps, and real customer workflows. My work focuses on useful automation, clean product execution, and verified delivery.
-        </p>
-        <div class="hero-actions">
-          <a class="button primary" href="#projects" data-i18n="hero.cta_project">View Projects</a>
-          <a class="button ghost" href="https://wa.me/201032687481" target="_blank" rel="noreferrer" data-i18n="hero.cta_whatsapp">WhatsApp me</a>
+  <!-- ==================== HOME ==================== -->
+  <div class="view" data-view="home">
+
+    <section class="hero" id="top">
+      <div class="hero-sky" aria-hidden="true">
+        <div class="sky-day"></div>
+        <div class="sky-night"></div>
+        <div class="stars"></div>
+        <svg class="sun" viewBox="0 0 200 200" aria-hidden="true">
+          <defs><pattern id="sunStripe" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+            <rect width="7" height="14" fill="#F5C542"></rect></pattern></defs>
+          <circle cx="100" cy="100" r="96" fill="url(#sunStripe)"></circle>
+        </svg>
+        <svg class="moon" viewBox="0 0 200 200" aria-hidden="true">
+          <defs>
+            <mask id="moonCrescent">
+              <rect width="200" height="200" fill="white"></rect>
+              <circle cx="135" cy="76" r="76" fill="black"></circle>
+            </mask>
+          </defs>
+          <circle cx="100" cy="100" r="88" fill="#F3EEDF" mask="url(#moonCrescent)"></circle>
+        </svg>
+        <div class="cloud-layer layer-a"><svg class="cloud" viewBox="0 0 260 90" aria-hidden="true"><g fill="#EAF4FF"><rect x="10" y="46" width="240" height="42" rx="21"/><circle cx="86" cy="46" r="40"/><circle cx="150" cy="52" r="32"/><circle cx="196" cy="60" r="24"/></g></svg></div>
+        <div class="cloud-layer layer-b"><svg class="cloud" viewBox="0 0 260 90" aria-hidden="true"><g fill="#F2F8FF"><rect x="10" y="46" width="240" height="42" rx="21"/><circle cx="86" cy="46" r="40"/><circle cx="150" cy="52" r="32"/><circle cx="196" cy="60" r="24"/></g></svg></div>
+        <div class="cloud-layer layer-c"><svg class="cloud" viewBox="0 0 260 90" aria-hidden="true"><g fill="#E4F0FF"><rect x="10" y="46" width="240" height="42" rx="21"/><circle cx="86" cy="46" r="40"/><circle cx="150" cy="52" r="32"/><circle cx="196" cy="60" r="24"/></g></svg></div>
+
+        <!-- a plane crosses the sky, drawing a contrail behind it -->
+        <div class="flight">
+          <span class="contrail"></span>
+          <svg class="plane-sprite" viewBox="0 0 32 32" aria-hidden="true">
+            <path d="M2 17.5 L30 15 L20 20.5 L21.5 29 L17 22 L9.5 25 L12 19.5 Z" fill="#FFF9E9"/>
+          </svg>
         </div>
-        <dl class="signal-grid" aria-label="Portfolio signals">
-          <div>
-            <dt data-i18n="hero.signal_1_label">focus</dt>
-            <dd data-i18n="hero.signal_1_value">AI agents + product systems</dd>
+
+        <!-- birds -->
+        <svg class="bird bird-1" viewBox="0 0 40 16" aria-hidden="true"><path d="M2 10 Q10 2 19 9 Q28 2 38 10" fill="none" stroke="#FFF9E9" stroke-width="2.2" stroke-linecap="round"/></svg>
+        <svg class="bird bird-2" viewBox="0 0 40 16" aria-hidden="true"><path d="M2 10 Q10 2 19 9 Q28 2 38 10" fill="none" stroke="#FFF9E9" stroke-width="2.2" stroke-linecap="round"/></svg>
+        <svg class="bird bird-3" viewBox="0 0 40 16" aria-hidden="true"><path d="M2 10 Q10 2 19 9 Q28 2 38 10" fill="none" stroke="#FFF9E9" stroke-width="2.2" stroke-linecap="round"/></svg>
+      </div>
+
+      <p class="hero-rail" aria-hidden="true">AI / SYSTEMS / ARABIC</p>
+
+      <div class="hero-content">
+        <p class="eyebrow hero-eyebrow"><span class="dot" aria-hidden="true"></span><span data-i18n="hero.eyebrow">HELLO, I'M KAREEM AHMED.</span></p>
+        <h1 class="hero-display">
+          <span class="line" data-split data-i18n="hero.display_1">I build</span>
+          <span class="line line-2"><span class="swap" data-swap aria-live="polite"><i class="on">Ships</i></span></span>
+        </h1>
+      </div>
+
+      <!-- Bilingual Console -->
+      <div class="console" data-console>
+        <button class="dial dial-en is-on" type="button" data-lang-dial="en" aria-label="English">
+          <span class="dial-face"><span class="dial-label">EN</span></span>
+        </button>
+        <div class="console-screen">
+          <p class="console-cap"><span data-i18n="console.cap">Agent trace · live</span></p>
+          <div class="console-out" data-trace></div>
+          <div class="console-bar"><i data-trace-bar></i></div>
+        </div>
+        <button class="dial dial-ar" type="button" data-lang-dial="ar" aria-label="العربية">
+          <span class="dial-face"><span class="dial-label ar">ع</span></span>
+        </button>
+      </div>
+
+      <svg class="hero-wave" viewBox="0 0 1440 200" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0,120 C220,40 380,178 620,132 C860,86 1010,4 1240,58 C1330,79 1390,96 1440,88 L1440,200 L0,200 Z" fill="var(--ground)"/>
+      </svg>
+    </section>
+
+    <section class="story">
+      <p class="story-lead" data-i18n="story.statement">I turn complicated ideas into clear digital products people can actually use. That includes websites, mobile apps, business tools, and AI automations in English and Arabic.</p>
+      <p class="story-serif" data-i18n="story.closing">Simple to understand. Reliable after launch.</p>
+      <p class="role-chip"><span data-i18n="experience.nova_role">Freelance AI developer</span><em data-i18n="experience.nova_period">Assiut, Egypt</em></p>
+      <figure class="story-portrait rv"><img src="assets/kareem-hero-v2.jpg" alt="Kareem Ahmed at his desk"></figure>
+    </section>
+
+    <section class="strip">
+      <p class="strip-label eyebrow" data-i18n="clients.label">CLIENTS</p>
+      <ul class="strip-list strip-clients">
+        <li>MP Mostafa Badran</li>
+        <li>Golden Gym M4</li>
+        <li>Badr Toys</li>
+      </ul>
+      <p class="strip-label eyebrow" data-i18n="creds.label">COMMUNITY &amp; CREDENTIALS</p>
+      <ul class="strip-list strip-creds">
+        <li>Claude 101</li>
+        <li>Google AI Development</li>
+        <li>Codex AI Agent</li>
+        <li>UI/UX Figma</li>
+      </ul>
+      <p class="strip-label eyebrow" data-i18n="stack.label">BUILT WITH</p>
+      <ul class="strip-list strip-stack">
+        <li>React</li><li>React Native</li><li>Next.js</li><li>Expo</li><li>NestJS</li><li>Prisma</li><li>PostgreSQL</li><li>Anthropic</li><li>Vercel</li>
+      </ul>
+    </section>
+
+    <!--
+      Testimonials stay hidden until each client approves their own quote.
+      Drafts are written and ready to send; flip data-approved to "true" only
+      after the named person confirms the wording, then remove `hidden` below.
+    -->
+    <section class="testimonials" data-testimonials hidden>
+      <h2 class="h2-serif">What clients say</h2>
+      <div class="t-cards">
+        <blockquote class="t-card" data-approved="false">
+          <p>Kareem took a rough idea and returned a working product. What stood out was that he tested it in the real environment before calling it done — nothing came back broken.</p>
+          <footer>MP Mostafa Badran</footer>
+        </blockquote>
+        <blockquote class="t-card" data-approved="false">
+          <p>Membership, payments, and check-in all run through one system now. Our staff learned it in a day, and it works in Arabic, which mattered more than we expected.</p>
+          <footer>Golden Gym M4</footer>
+        </blockquote>
+      </div>
+    </section>
+
+    <section class="home-work">
+      <div class="sec-head">
+        <p class="eyebrow" data-i18n="projects.kicker">SELECTED PROJECTS</p>
+        <h2 class="h2-serif" data-i18n="projects.title">Work that solves a clear problem.</h2>
+      </div>
+      <div class="card-grid card-grid-home">
+        <a class="card card-tall" href="/work" data-link>
+          <div class="cover cover-tall" data-pattern="grid" style="--c:#1E3A5F">
+            <span class="cover-kind">SAAS PLATFORM</span>
+            <span class="cover-mark">CoachFlow</span>
           </div>
-          <div>
-            <dt data-i18n="hero.signal_2_label">stack</dt>
-            <dd data-i18n="hero.signal_2_value">Next.js, NestJS, Prisma, Expo</dd>
+          <div class="card-meta"><h3>CoachFlow</h3><p data-i18n="morebuilds.card_1_copy">One system for coaches to manage clients, plans, progress, messages, and daily work.</p><span class="card-go" data-i18n="cta.read_more">Read about this build</span></div>
+        </a>
+        <a class="card" href="https://omdafit.vercel.app" target="_blank" rel="noreferrer">
+          <div class="cover" data-pattern="stripe" style="--c:#E8501E">
+            <span class="cover-kind">WEB · SUBSCRIPTIONS</span>
+            <span class="cover-mark">OmdaFit</span>
           </div>
-          <div>
-            <dt data-i18n="hero.signal_3_label">edge</dt>
-            <dd data-i18n="hero.signal_3_value">English and Arabic workflows</dd>
+          <div class="card-meta"><h3>OmdaFit</h3><p data-i18n="omdafit.short">A fitness website that helps visitors understand the offer and join.</p><span class="card-go" data-i18n="cta.open_live">Open the live site</span></div>
+        </a>
+        <a class="card card-wide card-cta" href="/work" data-link>
+          <div class="cover cover-flat" data-pattern="grid" style="--c:#1E3A5F">
+            <span class="cover-mark" data-i18n="projects.see_all">See all eleven projects</span>
+            <span class="cover-arrow" aria-hidden="true">→</span>
           </div>
+        </a>
+      </div>
+    </section>
+
+    <section class="contact-band">
+      <p class="eyebrow" data-i18n="contact.kicker">FREELANCE AVAILABILITY</p>
+      <h2 class="h2-serif big" data-i18n="contact.title">Have an AI workflow that needs to become a real product?</h2>
+      <button class="btn-solid" type="button" data-contact-open data-i18n="nav.contact_chip">Get in touch</button>
+    </section>
+  </div>
+
+  <!-- ==================== WORK ==================== -->
+  <div class="view" data-view="work" hidden>
+    <section class="page-head">
+      <p class="eyebrow" data-i18n="projects.kicker">SELECTED PROJECTS</p>
+      <h1 class="h1-serif" data-i18n="projects.title">Projects built as real systems, not portfolio mockups.</h1>
+      <p class="page-lede" data-i18n="projects.copy">Production work spanning applied AI, SaaS architecture, client workflows, bilingual product thinking, and deployment.</p>
+    </section>
+
+    <section class="featured">
+      <div class="cover cover-lg" data-pattern="stripe" style="--c:#E8501E">
+        <span class="cover-kind">WEB · SUBSCRIPTIONS · 2026</span>
+        <span class="cover-mark">OmdaFit</span>
+      </div>
+      <div class="featured-copy">
+        <p class="eyebrow">FEATURED</p>
+        <h2 class="h2-serif">OmdaFit</h2>
+        <p data-i18n="omdafit.panel_copy">A live fitness website focused on converting visitors into subscribers through clear plans, strong visual direction, and an onboarding flow that can connect into CoachFlow when a client is approved.</p>
+        <ul class="tags"><li>Vercel</li><li>Subscriptions</li><li>Client onboarding</li><li>CoachFlow handoff</li></ul>
+        <div class="links">
+          <a class="text-link" href="https://omdafit.vercel.app" target="_blank" rel="noreferrer" data-i18n="omdafit.live_button">Open OmdaFit</a>
+          <button class="text-link" type="button" data-contact-open data-i18n="omdafit.contact_button">Discuss a similar build</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="plane-section">
+      <svg class="plane-trail" viewBox="0 0 1200 2400" preserveAspectRatio="xMidYMin meet" aria-hidden="true">
+        <path id="trailPath" d="M600,0 C300,300 900,600 600,900 C300,1200 900,1500 600,1800 C420,1990 700,2200 600,2400"
+              fill="none" stroke="var(--line)" stroke-width="2" stroke-dasharray="10 12" data-trail/>
+      </svg>
+      <svg class="plane" viewBox="0 0 24 24" aria-hidden="true" data-plane><path d="M2 12 L22 4 L14 12 L22 20 Z" fill="var(--ink)"/></svg>
+
+      <div class="card-grid">
+        <article class="card">
+          <div class="cover" data-pattern="grid" style="--c:#1E3A5F"><span class="cover-kind">SAAS PLATFORM</span><span class="cover-mark">CoachFlow</span></div>
+          <div class="card-meta"><h3 data-i18n="morebuilds.card_1_title">CoachFlow</h3><p data-i18n="morebuilds.card_1_copy">Full coaching SaaS for MENA gyms and coaches with a Next.js dashboard, NestJS API, Prisma/PostgreSQL, and an Expo client app.</p></div>
+        </article>
+        <article class="card">
+          <div class="cover" data-pattern="dots" style="--c:#C4623A"><span class="cover-kind">AI SERVICE</span><span class="cover-mark">AI services</span></div>
+          <div class="card-meta"><h3 data-i18n="coachflow.card_1_title">AI services</h3><p data-i18n="coachflow.card_1_copy">Anthropic-backed service layer for check-in summaries and custom Egyptian meal generation, connected through backend workflows rather than loose prompt demos.</p></div>
+        </article>
+        <article class="card">
+          <div class="cover" data-pattern="bridge" style="--c:#2F6B54"><span class="cover-kind">BACKEND</span><span class="cover-mark">Provisioning</span></div>
+          <div class="card-meta"><h3 data-i18n="coachflow.card_2_title">Provisioning bridge</h3><p data-i18n="coachflow.card_2_copy">OmdaFit approval can provision CoachFlow clients through backend routes, linking a marketing flow to real account creation.</p></div>
+        </article>
+        <article class="card">
+          <div class="cover" data-pattern="mirror" style="--c:#6B4E8F"><span class="cover-kind">BILINGUAL UX</span><span class="cover-mark">EN <em>·</em> ع</span></div>
+          <div class="card-meta"><h3 data-i18n="coachflow.card_3_title">English and Arabic UX</h3><p data-i18n="coachflow.card_3_copy">Dashboard and mobile labels include Arabic and English strings, RTL-aware experiences, and regional details.</p></div>
+        </article>
+        <article class="card">
+          <div class="cover" data-pattern="phone" style="--c:#1E3A5F"><span class="cover-kind">MOBILE · EXPO</span><span class="cover-mark">Client app</span></div>
+          <div class="card-meta"><h3 data-i18n="coachflow.card_4_title">Native client app</h3><p data-i18n="coachflow.card_4_copy">Expo app with secure token storage, workout player, nutrition views, progress check-ins, messages, and guarded client login.</p></div>
+        </article>
+        <article class="card">
+          <div class="cover" data-pattern="qr" style="--c:#B8442E"><span class="cover-kind">PAYMENTS · QR</span><span class="cover-mark">5D Fitness</span></div>
+          <div class="card-meta"><h3 data-i18n="morebuilds.card_2_title">5D Fitness</h3><p data-i18n="morebuilds.card_2_copy">Gym membership platform with Paymob checkout, instant digital membership, QR check-in, and a staff dashboard.</p></div>
+        </article>
+        <article class="card">
+          <div class="cover" data-pattern="window" style="--c:#3F6B7A"><span class="cover-kind">DESKTOP · OFFLINE</span><span class="cover-mark">ClinicBase</span></div>
+          <div class="card-meta"><h3 data-i18n="morebuilds.card_3_title">ClinicBase</h3><p data-i18n="morebuilds.card_3_copy">Offline-first Electron and SQLite desktop system with staff roles, Excel exports, and Arabic and English support.</p></div>
+        </article>
+        <article class="card">
+          <div class="cover" data-pattern="bar" style="--c:#3A3A3A"><span class="cover-kind">MACOS MENU BAR</span><span class="cover-mark">Limit</span></div>
+          <div class="card-meta"><h3 data-i18n="morebuilds.card_4_title">Limit</h3><p data-i18n="morebuilds.card_4_copy">A macOS menu-bar app that reads Claude and Codex subscription usage locally, with an Android companion over Wi-Fi.</p></div>
+        </article>
+        <article class="card">
+          <div class="cover" data-pattern="arch" style="--c:#1F5F4E"><span class="cover-kind">ON-DEVICE</span><span class="cover-mark">Misk</span></div>
+          <div class="card-meta"><h3 data-i18n="morebuilds.card_5_title">Misk</h3><p data-i18n="morebuilds.card_5_copy">A private worship companion with prayer times, Qibla, Mushaf, athkar, duas, and athan audio—all on device.</p></div>
+        </article>
+        <article class="card">
+          <div class="cover" data-pattern="frames" style="--c:#14121A"><span class="cover-kind">300-FRAME SCROLL</span><span class="cover-mark">Rayhaan</span></div>
+          <div class="card-meta"><h3 data-i18n="morebuilds.card_6_title">Rayhaan Obsidian</h3><p data-i18n="morebuilds.card_6_copy">A cinematic fragrance presentation built around a 300-frame scroll-controlled image sequence.</p><a class="text-link" href="https://rayhaan-obsidian.vercel.app" target="_blank" rel="noreferrer" data-i18n="morebuilds.card_6_link">View live</a></div>
+        </article>
+      </div>
+    </section>
+  </div>
+
+  <!-- ==================== ABOUT ==================== -->
+  <div class="view" data-view="about" hidden>
+    <section class="page-head">
+      <p class="eyebrow" data-i18n="capabilities.kicker">ABOUT THE WORK</p>
+      <h1 class="h1-serif" data-i18n="capabilities.title">From an idea to a working product.</h1>
+    </section>
+
+    <section class="about-intro">
+      <figure class="about-portrait"><img src="assets/kareem-about-v2.jpg" alt="Portrait of Kareem Ahmed"></figure>
+      <div class="about-copy">
+        <p data-i18n="profile.copy">I plan, design, and build complete digital products. I explain decisions clearly, support Arabic and English, and test the finished work before I hand it over.</p>
+        <dl class="signals">
+          <div><dt data-i18n="hero.signal_1_label">Focus</dt><dd data-i18n="hero.signal_1_value">AI agents + product systems</dd></div>
+          <div><dt data-i18n="hero.signal_2_label">Stack</dt><dd data-i18n="hero.signal_2_value">React and React Native — web and mobile from one stack</dd></div>
+          <div><dt data-i18n="hero.signal_3_label">Edge</dt><dd data-i18n="hero.signal_3_value">English and Arabic workflows</dd></div>
         </dl>
       </div>
-
-      <aside class="profile-window reveal" aria-label="Kareem Ahmed portrait and profile summary">
-        <div class="window-controls" aria-hidden="true">
-          <span class="red"></span>
-          <span class="yellow"></span>
-          <span class="green"></span>
-        </div>
-        <img src="assets/20250918_190423.jpg" alt="Kareem Ahmed portrait">
-        <div class="profile-caption">
-          <span data-i18n="profile.status">[available]</span>
-          <strong>Kareem Ahmed</strong>
-          <p data-i18n="profile.copy">Applied AI developer building practical automations, SaaS dashboards, and bilingual client workflows.</p>
-        </div>
-      </aside>
     </section>
 
-    <section id="projects" class="projects section-band">
-      <div class="section-heading reveal">
-        <p class="mono-line" data-i18n="projects.kicker">selected projects</p>
-        <h2 data-i18n="projects.title">Projects built as real systems, not portfolio mockups.</h2>
-        <p data-i18n="projects.copy">
-          A production-grade build that shows applied AI, SaaS architecture, client workflows, bilingual product thinking, and live deployment discipline.
-        </p>
+    <section class="services">
+      <div class="sec-head">
+        <p class="eyebrow" data-i18n="services.kicker">WHAT I CAN BUILD</p>
+        <h2 class="h2-serif" data-i18n="services.title">Useful digital products, built around real needs.</h2>
       </div>
+      <div class="acc" data-acc>
+        <article class="acc-item is-open" data-acc-item><button class="acc-btn" type="button" aria-expanded="true"><strong data-i18n="services.card_1_title">AI assistants and automations</strong><span class="acc-ico" aria-hidden="true"></span></button><div class="acc-body"><p data-i18n="services.card_1_copy">Save time on repeated work such as finding opportunities, preparing first drafts, organizing information, and reminding your team what needs attention.</p></div></article>
+        <article class="acc-item" data-acc-item><button class="acc-btn" type="button" aria-expanded="false"><strong data-i18n="services.card_2_title">Business dashboards</strong><span class="acc-ico" aria-hidden="true"></span></button><div class="acc-body"><p data-i18n="services.card_2_copy">Give staff and customers one clear place to manage accounts, payments, reports, appointments, or daily operations.</p></div></article>
+        <article class="acc-item" data-acc-item><button class="acc-btn" type="button" aria-expanded="false"><strong data-i18n="services.card_3_title">Connected business tools</strong><span class="acc-ico" aria-hidden="true"></span></button><div class="acc-body"><p data-i18n="services.card_3_copy">Connect forms, messages, customer records, payments, and notifications so information moves without repeated copying.</p></div></article>
+        <article class="acc-item" data-acc-item><button class="acc-btn" type="button" aria-expanded="false"><strong data-i18n="services.card_4_title">Websites and mobile apps</strong><span class="acc-ico" aria-hidden="true"></span></button><div class="acc-body"><p data-i18n="services.card_4_copy">Responsive websites and mobile apps with clear screens, fast everyday actions, and a consistent experience across devices.</p></div></article>
+        <article class="acc-item" data-acc-item><button class="acc-btn" type="button" aria-expanded="false"><strong data-i18n="services.card_5_title">Arabic and English experiences</strong><span class="acc-ico" aria-hidden="true"></span></button><div class="acc-body"><p data-i18n="services.card_5_copy">Natural Arabic and English wording, right-to-left layouts, and details that make the product feel familiar to local customers.</p></div></article>
+        <article class="acc-item" data-acc-item><button class="acc-btn" type="button" aria-expanded="false"><strong data-i18n="services.card_6_title">Testing and launch support</strong><span class="acc-ico" aria-hidden="true"></span></button><div class="acc-body"><p data-i18n="services.card_6_copy">I test the important journeys, check phone and desktop layouts, and confirm the live version works before calling the project finished.</p></div></article>
+      </div>
+    </section>
 
-      <div class="project-showcase">
-        <article class="project-panel main-panel reveal">
-          <div class="window-controls" aria-hidden="true">
-            <span class="red"></span>
-            <span class="yellow"></span>
-            <span class="green"></span>
+    <!--
+      CREDENTIALS
+      Add a row per certificate. Keep `data-issuer` to one of: anthropic, google, other.
+      Only list credentials actually held — the year and exact title should match
+      the certificate itself so anyone can verify it.
+      Add `<a class="cert-verify" href="…">Verify</a>` inside .cert-meta when a
+      public credential URL exists.
+    -->
+    <section class="certs">
+      <div class="sec-head">
+        <p class="eyebrow" data-i18n="certs.kicker">CREDENTIALS</p>
+        <h2 class="h2-serif" data-i18n="certs.title">Trained on the tools I build with.</h2>
+      </div>
+      <ul class="cert-list">
+        <li class="cert" data-issuer="anthropic">
+          <span class="cert-badge cert-badge-logo" aria-hidden="true">
+            <svg class="cert-logo cert-logo-claude" viewBox="0 0 32 32">
+              <path d="M16 3.5v25M4.2 10l23.6 12M4.2 22l23.6-12M9.5 4.7l13 22.6M22.5 4.7l-13 22.6"/>
+            </svg>
+          </span>
+          <div class="cert-meta">
+            <strong>Claude 101</strong>
+            <span class="cert-issuer">Anthropic Academy</span>
           </div>
-          <div class="panel-header">
-            <span data-i18n="omdafit.panel_label">fitness subscription site</span>
-            <strong data-i18n="omdafit.panel_status">vercel live</strong>
+        </li>
+        <li class="cert" data-issuer="google">
+          <span class="cert-badge cert-badge-logo" aria-hidden="true">
+            <svg class="cert-logo cert-logo-google" viewBox="0 0 32 32">
+              <path class="google-blue" d="M28.2 16.3c0-1-.1-2-.3-3H16v5.6h6.8a5.8 5.8 0 0 1-2.5 3.7v3.7h4.8c2.8-2.6 4.4-6.4 4.4-10z"/>
+              <path class="google-green" d="M16 28.7c4 0 7.3-1.3 9.8-3.5l-4.8-3.7c-1.3.9-3 1.4-5 1.4-3.8 0-7.1-2.6-8.3-6.1h-5v3.9A13.2 13.2 0 0 0 16 28.7z"/>
+              <path class="google-yellow" d="M7.7 16.8a8 8 0 0 1 0-5.1V7.8h-5a13.2 13.2 0 0 0 0 12.9l5-3.9z"/>
+              <path class="google-red" d="M16 6.3c2.2 0 4.2.8 5.7 2.2L26 4.2A13.2 13.2 0 0 0 2.7 7.8l5 3.9c1.2-3.5 4.5-5.4 8.3-5.4z"/>
+            </svg>
+          </span>
+          <div class="cert-meta">
+            <strong>Google AI Development Certificate</strong>
+            <span class="cert-issuer">Certificate</span>
           </div>
-          <div class="coachflow-brand omdafit-brand">
-            <img class="omdafit-icon" src="assets/omdafit-icon.png" alt="OmdaFit icon">
-            <div>
-              <h3>OmdaFit</h3>
-              <p data-i18n="omdafit.brand_line">A polished fitness subscription experience connected to real client onboarding.</p>
-            </div>
+        </li>
+        <li class="cert" data-issuer="other">
+          <span class="cert-badge" aria-hidden="true">N</span>
+          <div class="cert-meta">
+            <strong>Nova Solutions Company Certificate</strong>
+            <span class="cert-issuer">Certificate</span>
           </div>
-          <div class="project-actions">
-            <a class="button primary" href="https://omdafit.vercel.app" target="_blank" rel="noreferrer" data-i18n="omdafit.live_button">Open OmdaFit</a>
-            <a class="button ghost" href="mailto:official.kareem.ahmed@gmail.com" data-i18n="omdafit.contact_button">Discuss a similar build</a>
+        </li>
+        <li class="cert" data-issuer="openai">
+          <span class="cert-badge cert-badge-logo" aria-hidden="true">
+            <svg class="cert-logo cert-logo-openai" viewBox="0 0 24 24">
+              <path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z"/>
+            </svg>
+          </span>
+          <div class="cert-meta">
+            <strong>Codex AI Agent Certificate</strong>
+            <span class="cert-issuer">Certificate</span>
           </div>
-          <div class="architecture-map omdafit-map">
-            <div class="arch-node" data-i18n="omdafit.arch_1">Vercel production site</div>
-            <div class="arch-node" data-i18n="omdafit.arch_2">Plan selection flow</div>
-            <div class="arch-node" data-i18n="omdafit.arch_3">Approval-ready onboarding</div>
-            <div class="arch-node" data-i18n="omdafit.arch_4">CoachFlow handoff path</div>
+        </li>
+        <li class="cert" data-issuer="figma">
+          <span class="cert-badge cert-badge-logo" aria-hidden="true">
+            <svg class="cert-logo cert-logo-figma" viewBox="0 0 24 36">
+              <path fill="#F24E1E" d="M0 6a6 6 0 0 1 6-6h6v12H6a6 6 0 0 1-6-6z"/>
+              <path fill="#FF7262" d="M12 0h6a6 6 0 0 1 0 12h-6z"/>
+              <path fill="#A259FF" d="M0 18a6 6 0 0 1 6-6h6v12H6a6 6 0 0 1-6-6z"/>
+              <circle cx="18" cy="18" r="6" fill="#1ABCFE"/>
+              <path fill="#0ACF83" d="M0 30a6 6 0 0 1 6-6h6v6A6 6 0 0 1 0 30z"/>
+            </svg>
+          </span>
+          <div class="cert-meta">
+            <strong>UI/UX Figma Certificate</strong>
+            <span class="cert-issuer">Certificate</span>
           </div>
-          <p data-i18n="omdafit.panel_copy">
-            OmdaFit is a live fitness website focused on converting visitors into subscribers through clear plans, strong visual direction, and an onboarding flow that can connect into CoachFlow when a client is approved.
-          </p>
-        </article>
-
-        <div class="project-grid">
-          <article class="project-card reveal">
-            <span class="icon" aria-hidden="true">AI</span>
-            <h3 data-i18n="coachflow.card_1_title">AI services</h3>
-            <p data-i18n="coachflow.card_1_copy">Anthropic-backed service layer for check-in summaries and custom Egyptian meal generation, connected through backend workflows rather than loose prompt demos.</p>
-          </article>
-          <article class="project-card reveal">
-            <span class="icon" aria-hidden="true">API</span>
-            <h3 data-i18n="coachflow.card_2_title">Provisioning bridge</h3>
-            <p data-i18n="coachflow.card_2_copy">OmdaFit approval can provision CoachFlow clients through backend routes, linking a marketing/subscription flow to real account creation.</p>
-          </article>
-          <article class="project-card reveal">
-            <span class="icon" aria-hidden="true">AR</span>
-            <h3 data-i18n="coachflow.card_3_title">English and Arabic UX</h3>
-            <p data-i18n="coachflow.card_3_copy">Dashboard and mobile labels include Arabic/English strings, RTL-aware experiences, and regional details like Egyptian foods and MENA coaching assumptions.</p>
-          </article>
-          <article class="project-card reveal">
-            <span class="icon" aria-hidden="true">APP</span>
-            <h3 data-i18n="coachflow.card_4_title">Native client app</h3>
-            <p data-i18n="coachflow.card_4_copy">Expo app mirrors the web client dashboard with secure token storage, workout player, nutrition views, progress check-ins, messages, and client-only login guard.</p>
-          </article>
-          <article class="project-card reveal">
-            <span class="icon" aria-hidden="true">CF</span>
-            <h3 data-i18n="morebuilds.card_1_title">CoachFlow</h3>
-            <p data-i18n="morebuilds.card_1_copy">Full coaching SaaS for MENA gyms and coaches — Next.js dashboard, NestJS API, Prisma/PostgreSQL, and a native Expo client app for workouts, nutrition, check-ins, and messaging.</p>
-          </article>
-          <article class="project-card reveal">
-            <span class="icon" aria-hidden="true">5D</span>
-            <h3 data-i18n="morebuilds.card_2_title">5D Fitness</h3>
-            <p data-i18n="morebuilds.card_2_copy">Gym membership platform for a real Cairo gym — Paymob checkout, instant digital membership with QR check-in, and a staff admin dashboard on Next.js + Prisma, deployed on Railway.</p>
-          </article>
-          <article class="project-card reveal">
-            <span class="icon" aria-hidden="true">CB</span>
-            <h3 data-i18n="morebuilds.card_3_title">ClinicBase</h3>
-            <p data-i18n="morebuilds.card_3_copy">Offline-first desktop system for a gynecology clinic — Electron + SQLite, role-based staff accounts, Excel exports, and full Arabic/English support for a clinic that runs without the internet.</p>
-          </article>
-          <article class="project-card reveal">
-            <span class="icon" aria-hidden="true">LM</span>
-            <h3 data-i18n="morebuilds.card_4_title">Limit</h3>
-            <p data-i18n="morebuilds.card_4_copy">A macOS menu-bar app that reads your Claude and Codex subscription usage straight from local credentials — no sign-up, no server — with a companion Android viewer over Wi-Fi.</p>
-          </article>
-          <article class="project-card reveal">
-            <span class="icon" aria-hidden="true">MK</span>
-            <h3 data-i18n="morebuilds.card_5_title">Misk</h3>
-            <p data-i18n="morebuilds.card_5_copy">A worship companion app: on-device prayer times and Qibla, a full 604-page Mushaf reader, athkar and duas, and athan audio — no account, no backend, nothing leaves the phone.</p>
-          </article>
-          <article class="project-card reveal">
-            <span class="icon" aria-hidden="true">RO</span>
-            <h3 data-i18n="morebuilds.card_6_title">Rayhaan Obsidian</h3>
-            <p data-i18n="morebuilds.card_6_copy">A scroll-driven fragrance presentation site — a 300-frame image sequence choreographed against scroll position to build a dark, cinematic product story in the browser.</p>
-            <a class="mono-line" href="https://rayhaan-obsidian.vercel.app" target="_blank" rel="noreferrer" data-i18n="morebuilds.card_6_link">view live</a>
-          </article>
-        </div>
-      </div>
+        </li>
+      </ul>
     </section>
 
-    <section id="services" class="systems section-band">
-      <div class="section-heading reveal">
-        <p class="mono-line" data-i18n="services.kicker">what i can build</p>
-        <h2 data-i18n="services.title">Applied AI systems for real business workflows.</h2>
-        <p data-i18n="services.copy">I focus on systems where AI is connected to data, product screens, notifications, and human review points.</p>
+    <section class="process">
+      <div class="sec-head">
+        <p class="eyebrow" data-i18n="process.kicker">DELIVERY METHOD</p>
+        <h2 class="h2-serif" data-i18n="process.title">A clear build loop from inspection to launch.</h2>
       </div>
-      <div class="systems-grid">
-        <article class="system-card reveal">
-          <h3 data-i18n="services.card_1_title">AI proposal and follow-up agents</h3>
-          <p data-i18n="services.card_1_copy">Job scanning, fit scoring, proposal drafting, client-specific context, follow-up reminders, and review loops for Upwork, Fiverr, and LinkedIn pipelines.</p>
-        </article>
-        <article class="system-card reveal">
-          <h3 data-i18n="services.card_2_title">Custom SaaS dashboards</h3>
-          <p data-i18n="services.card_2_copy">Role-aware dashboards with auth, database models, admin controls, billing logic, analytics, and operational tools built around the actual workflow.</p>
-        </article>
-        <article class="system-card reveal">
-          <h3 data-i18n="services.card_3_title">API and automation glue</h3>
-          <p data-i18n="services.card_3_copy">Connect model APIs, CRMs, messaging, forms, Google tools, databases, and notifications into one reliable system with logging and verification.</p>
-        </article>
-        <article class="system-card reveal">
-          <h3 data-i18n="services.card_4_title">Web and mobile product builds</h3>
-          <p data-i18n="services.card_4_copy">Next.js web apps, React interfaces, Expo client apps, API integration, responsive design, local persistence, and polished frontend execution.</p>
-        </article>
-        <article class="system-card reveal">
-          <h3 data-i18n="services.card_5_title">Arabic client experience</h3>
-          <p data-i18n="services.card_5_copy">Arabic-facing copy, bilingual UI decisions, RTL-aware layouts, and support for clients who need local context instead of generic English-only automation.</p>
-        </article>
-        <article class="system-card reveal">
-          <h3 data-i18n="services.card_6_title">Verification-first delivery</h3>
-          <p data-i18n="services.card_6_copy">Testing, browser checks, deployment checks, live alias verification, and concrete proof that the system being delivered is the one users actually see.</p>
-        </article>
-      </div>
+      <ol class="steps">
+        <li><span class="step-n">01</span><h3 data-i18n="process.step_1_title">Inspect</h3><p data-i18n="process.step_1_copy">Understand the goal, the people using the product, and what is getting in their way.</p></li>
+        <li><span class="step-n">02</span><h3 data-i18n="process.step_2_title">Design</h3><p data-i18n="process.step_2_copy">Plan the clearest journey, screens, information, and decisions before building.</p></li>
+        <li><span class="step-n">03</span><h3 data-i18n="process.step_3_title">Build</h3><p data-i18n="process.step_3_copy">Build the complete product and connect the parts that need to work together.</p></li>
+        <li><span class="step-n">04</span><h3 data-i18n="process.step_4_title">Verify</h3><p data-i18n="process.step_4_copy">Test the important journeys on different screen sizes and confirm the live version works.</p></li>
+      </ol>
     </section>
+  </div>
 
-    <section class="capabilities section-band">
-      <div class="section-heading reveal">
-        <p class="mono-line" data-i18n="capabilities.kicker">capabilities</p>
-        <h2 data-i18n="capabilities.title">From idea to working product.</h2>
-      </div>
-      <div class="capability-list">
-        <div class="capability-row reveal">
-          <span>01</span>
-          <strong data-i18n="capabilities.item_1_title">AI workflow design</strong>
-          <p data-i18n="capabilities.item_1_copy">Define what the agent should do, what humans approve, and where model output becomes product state.</p>
-        </div>
-        <div class="capability-row reveal">
-          <span>02</span>
-          <strong data-i18n="capabilities.item_2_title">Backend and data models</strong>
-          <p data-i18n="capabilities.item_2_copy">Build APIs, database schemas, auth, queues, notifications, and admin operations around the workflow.</p>
-        </div>
-        <div class="capability-row reveal">
-          <span>03</span>
-          <strong data-i18n="capabilities.item_3_title">Polished client-facing UI</strong>
-          <p data-i18n="capabilities.item_3_copy">Create clean web and mobile surfaces that clients can understand quickly in English or Arabic.</p>
-        </div>
-      </div>
+  <!-- ==================== PLAYGROUND ==================== -->
+  <div class="view" data-view="playground" hidden>
+    <section class="page-head">
+      <p class="eyebrow" data-i18n="play.kicker">PLAYGROUND</p>
+      <h1 class="h1-serif" data-i18n="play.title">Things built for the pleasure of building them.</h1>
     </section>
-
-    <section id="process" class="process section-band">
-      <div class="section-heading reveal">
-        <p class="mono-line" data-i18n="process.kicker">delivery method</p>
-        <h2 data-i18n="process.title">A smooth build loop from inspection to launch.</h2>
-      </div>
-      <div class="timeline">
-        <article class="timeline-item reveal">
-          <span>01</span>
-          <h3 data-i18n="process.step_1_title">Inspect</h3>
-          <p data-i18n="process.step_1_copy">Read the current product, repo, user flow, business process, and deployment reality before proposing a solution.</p>
-        </article>
-        <article class="timeline-item reveal">
-          <span>02</span>
-          <h3 data-i18n="process.step_2_title">Design</h3>
-          <p data-i18n="process.step_2_copy">Map the workflow, data model, screens, automations, prompts, and human review points so the AI does useful work safely.</p>
-        </article>
-        <article class="timeline-item reveal">
-          <span>03</span>
-          <h3 data-i18n="process.step_3_title">Build</h3>
-          <p data-i18n="process.step_3_copy">Implement the frontend, backend, API connections, database state, auth, notifications, and model calls as one coherent product.</p>
-        </article>
-        <article class="timeline-item reveal">
-          <span>04</span>
-          <h3 data-i18n="process.step_4_title">Verify</h3>
-          <p data-i18n="process.step_4_copy">Run the app, check responsive screens, test key paths, inspect live deployments, and fix mismatches before calling the work done.</p>
-        </article>
-      </div>
+    <section class="card-grid play-grid">
+      <article class="card">
+        <div class="cover" data-pattern="bar" style="--c:#3A3A3A"><span class="cover-kind">MACOS MENU BAR</span><span class="cover-mark">Limit</span></div>
+        <div class="card-meta"><h3 data-i18n="morebuilds.card_4_title">Limit</h3><p data-i18n="morebuilds.card_4_copy">A macOS menu-bar app that reads Claude and Codex subscription usage locally, with an Android companion over Wi-Fi.</p></div>
+      </article>
+      <article class="card">
+        <div class="cover" data-pattern="arch" style="--c:#1F5F4E"><span class="cover-kind">ON-DEVICE</span><span class="cover-mark">Misk</span></div>
+        <div class="card-meta"><h3 data-i18n="morebuilds.card_5_title">Misk</h3><p data-i18n="morebuilds.card_5_copy">A private worship companion with prayer times, Qibla, Mushaf, athkar, duas, and athan audio—all on device.</p></div>
+      </article>
+      <article class="card">
+        <div class="cover" data-pattern="frames" style="--c:#14121A"><span class="cover-kind">300-FRAME SCROLL</span><span class="cover-mark">Rayhaan</span></div>
+        <div class="card-meta"><h3 data-i18n="morebuilds.card_6_title">Rayhaan Obsidian</h3><p data-i18n="morebuilds.card_6_copy">A cinematic fragrance presentation built around a 300-frame scroll-controlled image sequence.</p><a class="text-link" href="https://rayhaan-obsidian.vercel.app" target="_blank" rel="noreferrer" data-i18n="morebuilds.card_6_link">View live</a></div>
+      </article>
     </section>
+  </div>
 
-    <section class="proof section-band">
-      <div class="proof-copy reveal">
-        <p class="mono-line" data-i18n="proof.kicker">selected proof</p>
-        <h2 data-i18n="proof.title">Built around real outputs.</h2>
-        <p data-i18n="proof.copy">
-          The strongest proof in my portfolio is not a fake number. It is the ability to move from a product idea to a functioning system with web, mobile, backend, data, AI, and verification.
-        </p>
-      </div>
-      <div class="proof-list">
-        <div class="proof-item reveal">
-          <strong data-i18n="proof.item_1_title">Full-stack scope</strong>
-          <span data-i18n="proof.item_1_copy">CoachFlow spans dashboard, API, database, client app, and deployment.</span>
-        </div>
-        <div class="proof-item reveal">
-          <strong data-i18n="proof.item_2_title">AI in context</strong>
-          <span data-i18n="proof.item_2_copy">AI services sit inside check-ins, meals, automations, and user workflows.</span>
-        </div>
-        <div class="proof-item reveal">
-          <strong data-i18n="proof.item_3_title">Regional fit</strong>
-          <span data-i18n="proof.item_3_copy">Arabic support, Egyptian food logic, Fawry/manual payment assumptions, and MENA coaching flows.</span>
-        </div>
-      </div>
-    </section>
+</main>
 
-    <section id="contact" class="contact section-band">
-      <div class="contact-panel reveal">
-        <p class="mono-line" data-i18n="contact.kicker">freelance availability</p>
-        <h2 data-i18n="contact.title">Have an AI workflow that needs to become a real product?</h2>
-        <p data-i18n="contact.copy">
-          I can help with AI agents, automation pipelines, SaaS dashboards, API integrations, bilingual client flows, and prototype-to-production builds.
-        </p>
-        <div class="contact-actions">
-          <a class="button primary" href="mailto:official.kareem.ahmed@gmail.com" data-i18n="contact.email_button">Email Kareem</a>
-          <a class="button ghost" href="https://wa.me/201032687481" target="_blank" rel="noreferrer" data-i18n="contact.whatsapp_button">WhatsApp</a>
-          <a class="button ghost" href="tel:+201554557481" data-i18n="contact.call_button">Call</a>
-          <a class="button ghost" href="https://www.linkedin.com/in/kareem-ahmed-b1b5313b0" target="_blank" rel="noreferrer">LinkedIn</a>
-        </div>
-      </div>
-    </section>
-  </main>
+<footer class="site-footer">
+  <strong>KAREEM AHMED</strong>
+  <p data-i18n="footer.copy">© 2026 Built by Kareem</p>
+  <button type="button" data-to-top data-i18n="footer.top">Back to top</button>
+</footer>
 
-  <footer class="site-footer">
-    <strong class="footer-name" aria-label="Kareem is applied AI developer">[kareem]</strong>
-    <p data-i18n="footer.copy">designed & built for applied AI work - 2026</p>
-    <a href="#top" data-i18n="footer.top">Back to top</a>
-  </footer>
+<!-- mobile menu -->
+<div class="menu" id="mobile-menu" data-menu hidden aria-hidden="true">
+  <button class="menu-close icon-button" type="button" data-menu-close aria-label="Close menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg></button>
+  <nav class="menu-nav" aria-label="Mobile">
+    <a href="/" data-link data-menu-link data-i18n="nav.home">Home</a>
+    <a href="/work" data-link data-menu-link data-i18n="nav.projects">Projects</a>
+    <a href="/about" data-link data-menu-link data-i18n="nav.services">About</a>
+    <a href="/playground" data-link data-menu-link data-i18n="nav.playground">Playground</a>
+  </nav>
+  <button class="btn-solid" type="button" data-contact-open data-i18n="nav.contact_chip">Get in touch</button>
+</div>
 
-  <script src="js/main.js?v=8"></script>
+<!-- contact drawer -->
+<div class="scrim" data-scrim hidden></div>
+<aside class="drawer" data-drawer hidden aria-hidden="true" aria-label="Contact">
+  <button class="drawer-close icon-button" type="button" data-contact-close aria-label="Close contact panel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg></button>
+  <h2 class="h2-serif" data-i18n="contact.title">Have an AI workflow that needs to become a real product?</h2>
+  <p data-i18n="contact.copy">I can help with AI agents, automation pipelines, SaaS dashboards, API integrations, bilingual client flows, and prototype-to-production builds.</p>
+  <div class="drawer-links">
+    <a href="mailto:official.kareem.ahmed@gmail.com" data-i18n="contact.email_button">Email Kareem</a>
+    <a href="https://wa.me/201032687481" target="_blank" rel="noreferrer" data-i18n="contact.whatsapp_button">WhatsApp</a>
+    <a href="https://www.linkedin.com/in/kareem-ahmed-b1b5313b0" target="_blank" rel="noreferrer">LinkedIn</a>
+  </div>
+</aside>
+
+<noscript><style>.loader{display:none}.view[hidden]{display:block!important}</style></noscript>
+<script src="js/main.js?v=12"></script>
 </body>
 </html>
