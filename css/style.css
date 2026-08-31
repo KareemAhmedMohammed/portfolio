@@ -1111,15 +1111,15 @@ html[dir="rtl"] .signals div { grid-template-columns: 8rem 1fr; }
    A photographic, earth-toned system replaces the synthetic sky treatment.
    ============================================================ */
 :root {
-  --ground: #E8DCC7;
-  --ground-2: #D4B895;
-  --sand: #B08B6E;
-  --ink: #394326;
-  --ink-soft: #606C38;
-  --line: color-mix(in srgb, #606C38 28%, transparent);
-  --display-c: #E8DCC7;
+  --ground: #F8F3EB;
+  --ground-2: #EEE5D8;
+  --sand: #D5BFA4;
+  --ink: #292722;
+  --ink-soft: #746C60;
+  --line: color-mix(in srgb, #746C60 28%, transparent);
+  --display-c: #FFF9E9;
   --accent: #C66B3D;
-  --card: #D4B895;
+  --card: #FFFDF9;
   --f-display: "Epilogue", system-ui, sans-serif;
   --f-body: "Epilogue", system-ui, sans-serif;
   --f-mono: "Epilogue", system-ui, sans-serif;
@@ -1127,13 +1127,13 @@ html[dir="rtl"] .signals div { grid-template-columns: 8rem 1fr; }
 }
 
 html[data-theme="night"] {
-  --ground: #606C38;
-  --ground-2: #8B9D83;
-  --sand: #B08B6E;
-  --ink: #E8DCC7;
-  --ink-soft: #D4B895;
-  --line: color-mix(in srgb, #E8DCC7 30%, transparent);
-  --card: #8B9D83;
+  --ground: #151A20;
+  --ground-2: #202832;
+  --sand: #35404A;
+  --ink: #F3EEE5;
+  --ink-soft: #B8B1A6;
+  --line: color-mix(in srgb, #F3EEE5 30%, transparent);
+  --card: #202832;
 }
 
 body {
@@ -1463,8 +1463,12 @@ html[data-theme="night"] .dial:not(.is-on) .dial-label { color: #F3EEDF; }
 }
 .story-portrait.in { opacity: 1; transform: none; }
 .story-portrait img {
+  display: block;
+  width: 100%;
   aspect-ratio: 16/9;
+  height: auto;
   object-fit: cover;
+  object-position: center 28%;
   transform: scale(calc(1 + (1 - var(--sc-reveal-progress, 1)) * .035));
   transform-origin: 50% 50%;
   will-change: transform;
