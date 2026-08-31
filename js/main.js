@@ -118,6 +118,10 @@ const i18n = {
     'footer.grown': 'THE GARDEN IS FULL',
     'footer.sound_credit': 'Dawn chorus',
     'footer.sound_changes': 'Shortened, converted to mono and re-encoded.',
+    'trace.hero': 'Intro',
+    'trace.story': 'Story',
+    'trace.work': 'Work',
+    'trace.contact': 'Contact',
     loader: 'Loading portfolio',
     swap: ['software products with AI'],
     trace: [
@@ -237,6 +241,10 @@ const i18n = {
     'footer.grown': 'الجنينة كملت',
     'footer.sound_credit': 'أصوات الفجر',
     'footer.sound_changes': 'اتقصّت واتحولت لمونو واتعملها إعادة ترميز.',
+    'trace.hero': 'البداية',
+    'trace.story': 'الحكاية',
+    'trace.work': 'الشغل',
+    'trace.contact': 'تواصل',
     loader: 'بنجهز البورتفوليو',
     swap: ['منتجات برمجية بالذكاء الاصطناعي'],
     trace: [
@@ -271,6 +279,7 @@ function applyLang(next) {
   splitHero();
   resetSwap();
   startTrace();
+  requestAnimationFrame(() => homeScrollCraft?.layout());
 }
 
 /* ---------------- hero display ---------------- */
@@ -386,12 +395,18 @@ function showView(name, { instant = false } = {}) {
   const curtain = $('[data-curtain]');
   const swapNow = () => {
     $$('.view').forEach(v => { v.hidden = v.dataset.view !== name; });
+    document.body.dataset.activeView = name;
     $$('.nav-links a').forEach(a => {
       a.classList.toggle('is-active', routes[new URL(a.href, location.origin).pathname] === name);
     });
     window.scrollTo(0, 0);
     observeAll();
-    if (name === 'home') { splitHero(); playHero(); startTrace(); }
+    if (name === 'home') {
+      splitHero();
+      playHero();
+      startTrace();
+      ensureHomeScrollCraft();
+    }
   };
 
   if (instant || reduceMotion.matches || !curtain) { swapNow(); return; }
@@ -440,6 +455,19 @@ function observeAll() {
     if (el.closest('.view[hidden]')) return;
     io.observe(el);
   });
+}
+
+/* ---------------- Scrollcraft homepage ----------------
+   The runtime owns normalized act progress and the authored device families. */
+let homeScrollCraft = null;
+function ensureHomeScrollCraft() {
+  if (homeScrollCraft || !window.ScrollCraft) {
+    homeScrollCraft?.layout();
+    return;
+  }
+  const home = $('[data-scroll-home]');
+  if (!home || home.hidden) return;
+  homeScrollCraft = window.ScrollCraft.mount(home);
 }
 
 /* ---------------- scroll loop ---------------- */
@@ -495,6 +523,16 @@ function initPointer() {
   let raf = null;
 
   const LINK_SEL = 'a, button, [data-link], [data-contact-open], [data-menu-open], .dial, .card';
+  const garden = $('[data-garden-host]');
+
+  // The journey trace is fixed above the page and can become the pointer target
+  // while the footer is visibly underneath it. Use the footer's geometry so the
+  // flower state follows what the visitor sees, not whichever layer wins hit-testing.
+  const isOverGarden = (x, y) => {
+    if (!garden) return false;
+    const rect = garden.getBoundingClientRect();
+    return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
+  };
 
   addEventListener('pointermove', e => {
     mx = e.clientX; my = e.clientY;
@@ -510,7 +548,7 @@ function initPointer() {
     // Give the cursor a light edge over the darker hero sky.
     dot.classList.toggle('on-sky', !!e.target.closest('.hero'));
     // Over the garden the dot becomes a rosette you plant with.
-    dot.classList.toggle('is-garden', !!e.target.closest('[data-garden-host]'));
+    dot.classList.toggle('is-garden', isOverGarden(e.clientX, e.clientY));
     if (!raf) raf = requestAnimationFrame(loop);
   }, { passive: true });
 
@@ -524,9 +562,22 @@ function initPointer() {
   function loop() {
     raf = null;
     // cursor easing
-    cx += (mx - cx) * 0.22;
-    cy += (my - cy) * 0.22;
+    const dx = mx - cx;
+    const dy = my - cy;
+    cx += dx * 0.22;
+    cy += dy * 0.22;
     dot.style.transform = `translate3d(${cx}px, ${cy}px, 0) translate(-50%, -50%)`;
+
+    // Keep easing after pointermove stops. Previously the cursor advanced only
+    // once per event, so a quick move could leave the flower stranded far from
+    // the real pointer until the mouse moved again.
+    if (Math.abs(dx) > .1 || Math.abs(dy) > .1) {
+      raf = requestAnimationFrame(loop);
+    } else {
+      cx = mx;
+      cy = my;
+      dot.style.transform = `translate3d(${cx}px, ${cy}px, 0) translate(-50%, -50%)`;
+    }
 
     // Letters are handled by a pure CSS :hover rule (each glyph lifts, rotates
     // and recolours on its own). Nothing here may write ch.style.transform or

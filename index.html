@@ -11,7 +11,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Space+Grotesk:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&family=IBM+Plex+Sans+Arabic:wght@300;400;500;700&family=Aref+Ruqaa:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=27">
+  <link rel="stylesheet" href="css/vendor/scrollcraft.css?v=32">
+  <link rel="stylesheet" href="css/style.css?v=31">
 </head>
 <body class="is-loading" aria-busy="true">
 <a class="skip-link" href="#app">Skip to content</a>
@@ -107,7 +108,7 @@
 <main id="app">
 
   <!-- ==================== HOME ==================== -->
-  <div class="view" data-view="home">
+  <div class="view" data-view="home" data-scroll-home>
 
     <section class="hero" id="top">
       <div class="hero-sky" aria-hidden="true">
@@ -197,29 +198,29 @@
       </svg>
     </section>
 
-    <section class="story">
-      <p class="story-lead" data-i18n="story.statement">I turn complicated ideas into clear digital products people can actually use. That includes websites, mobile apps, business tools, and AI automations.</p>
-      <p class="story-serif" data-i18n="story.closing">Simple to understand. Reliable after launch.</p>
-      <p class="role-chip"><span data-i18n="experience.nova_role">Freelance AI developer</span><em data-i18n="experience.nova_period">Assiut, Egypt</em></p>
-      <figure class="story-portrait rv"><img src="assets/kareem-hero-v2.jpg" alt="Kareem Ahmed at his desk"></figure>
+    <section class="story" id="story" data-sc-act="flow">
+      <p class="story-lead" data-i18n="story.statement" data-sc-cue="0.08 0.48">I turn complicated ideas into clear digital products people can actually use. That includes websites, mobile apps, business tools, and AI automations.</p>
+      <p class="story-serif" data-i18n="story.closing" data-sc-cue="0.24 0.66">Simple to understand. Reliable after launch.</p>
+      <p class="role-chip" data-sc-cue="0.42 0.82"><span data-i18n="experience.nova_role">Freelance AI developer</span><em data-i18n="experience.nova_period">Assiut, Egypt</em></p>
+      <figure class="story-portrait" data-sc-reveal="up" data-sc-reveal-at="0.08 0.42"><img src="assets/kareem-social-session-v1.png" alt="Kareem Ahmed at his desk"></figure>
     </section>
 
-    <section class="strip">
-      <p class="strip-label eyebrow" data-i18n="clients.label">CLIENTS</p>
-      <ul class="strip-list strip-clients">
+    <section class="strip" data-sc-act="flow">
+      <p class="strip-label eyebrow" data-i18n="clients.label" data-sc-in>CLIENTS</p>
+      <ul class="strip-list strip-clients" data-sc-in>
         <li>MP Mostafa Badran</li>
         <li>Golden Gym M4</li>
         <li>Badr Toys</li>
       </ul>
-      <p class="strip-label eyebrow" data-i18n="creds.label">COMMUNITY &amp; CREDENTIALS</p>
-      <ul class="strip-list strip-creds">
+      <p class="strip-label eyebrow" data-i18n="creds.label" data-sc-in>COMMUNITY &amp; CREDENTIALS</p>
+      <ul class="strip-list strip-creds" data-sc-in>
         <li>Claude 101</li>
         <li>Google AI Development</li>
         <li>Codex AI Agent</li>
         <li>UI/UX Figma</li>
       </ul>
-      <p class="strip-label eyebrow" data-i18n="stack.label">BUILT WITH</p>
-      <ul class="strip-list strip-stack">
+      <p class="strip-label eyebrow" data-i18n="stack.label" data-sc-in>BUILT WITH</p>
+      <ul class="strip-list strip-stack" data-sc-in>
         <li>React</li><li>React Native</li><li>Next.js</li><li>Expo</li><li>NestJS</li><li>Prisma</li><li>PostgreSQL</li><li>Anthropic</li><li>Vercel</li>
       </ul>
     </section>
@@ -243,36 +244,38 @@
       </div>
     </section>
 
-    <section class="home-work">
-      <div class="sec-head">
-        <p class="eyebrow" data-i18n="projects.kicker">SELECTED PROJECTS</p>
-        <h2 class="h2-serif" data-i18n="projects.title">Work that solves a clear problem.</h2>
-      </div>
-      <div class="card-grid card-grid-home">
-        <a class="card card-tall" href="/work" data-link>
-          <div class="cover cover-tall" data-pattern="grid" style="--c:#1E3A5F">
+    <section class="home-work" id="selected-work" data-sc-act="pan" data-sc-span="4.4">
+      <div class="home-work-stage" data-sc-stage>
+      <div class="home-work-rail" data-sc-pan="0.04">
+        <header class="sec-head work-rail-intro">
+          <p class="eyebrow" data-i18n="projects.kicker">SELECTED PROJECTS</p>
+          <h2 class="h2-serif" data-i18n="projects.title">Work that solves a clear problem.</h2>
+        </header>
+        <a class="card card-tall" href="/work" data-link data-sc-in data-sc-tilt="5">
+          <div class="cover cover-tall" data-pattern="grid" style="--c:#1E3A5F" data-sc-parallax="-0.28">
             <span class="cover-kind">SAAS PLATFORM</span>
             <span class="cover-mark">CoachFlow</span>
           </div>
           <div class="card-meta"><h3>CoachFlow</h3><p data-i18n="morebuilds.card_1_copy">One system for coaches to manage clients, plans, progress, messages, and daily work.</p><span class="card-go" data-i18n="cta.read_more">Read about this build</span></div>
         </a>
-        <a class="card" href="https://omdafit.vercel.app" target="_blank" rel="noreferrer">
-          <div class="cover" data-pattern="stripe" style="--c:#E8501E">
+        <a class="card" href="https://omdafit.vercel.app" target="_blank" rel="noreferrer" data-sc-in data-sc-tilt="5">
+          <div class="cover" data-pattern="stripe" style="--c:#E8501E" data-sc-parallax="0.24">
             <span class="cover-kind">WEB · SUBSCRIPTIONS</span>
             <span class="cover-mark">OmdaFit</span>
           </div>
           <div class="card-meta"><h3>OmdaFit</h3><p data-i18n="omdafit.short">A fitness website that helps visitors understand the offer and join.</p><span class="card-go" data-i18n="cta.open_live">Open the live site</span></div>
         </a>
-        <a class="card card-wide card-cta" href="/work" data-link>
+        <a class="card card-wide card-cta" href="/work" data-link data-sc-in>
           <div class="cover cover-flat" data-pattern="grid" style="--c:#1E3A5F">
             <span class="cover-mark" data-i18n="projects.see_all">See all eleven projects</span>
             <span class="cover-arrow" aria-hidden="true">→</span>
           </div>
         </a>
       </div>
+      </div>
     </section>
 
-    <section class="contact-band">
+    <section class="contact-band" id="home-contact" data-sc-act="flow" data-sc-reveal="up" data-sc-reveal-at="0.08 0.48">
       <p class="eyebrow" data-i18n="contact.kicker">FREELANCE AVAILABILITY</p>
       <h2 class="h2-serif big" data-i18n="contact.title">Have an AI workflow that needs to become a real product?</h2>
       <button class="btn-solid" type="button" data-contact-open data-i18n="nav.contact_chip">Get in touch</button>
@@ -385,7 +388,7 @@
     </section>
 
     <section class="about-intro">
-      <figure class="about-portrait"><img src="assets/kareem-about-v2.jpg" alt="Portrait of Kareem Ahmed"></figure>
+      <figure class="about-portrait"><img src="assets/kareem-social-session-v2.png" alt="Portrait of Kareem Ahmed"></figure>
       <div class="about-copy">
         <p data-i18n="profile.copy">I plan, design, and build complete digital products. I explain decisions clearly and test the finished work before I hand it over.</p>
         <dl class="signals">
@@ -586,6 +589,7 @@
 </aside>
 
 <noscript><style>.loader{display:none}.view[hidden]{display:block!important}</style></noscript>
-<script src="js/main.js?v=27"></script>
+<script src="js/vendor/scrollcraft.js?v=32"></script>
+  <script src="js/main.js?v=32"></script>
 </body>
 </html>

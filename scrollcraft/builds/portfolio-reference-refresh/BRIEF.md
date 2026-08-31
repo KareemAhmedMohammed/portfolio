@@ -1,6 +1,6 @@
 # Portfolio reference refresh
 
-Inherited from the existing Claudy handoff and Kareem's live corrections on 30 August 2026.
+Inherited from the existing Claudy handoff and Kareem's live corrections on 30 August 2026. Creative continuation was explicitly delegated to Codex on 31 August 2026, with a local-review gate before any push or deployment.
 
 ## Interview answers
 
@@ -40,11 +40,16 @@ It's the site where a bilingual AI console turns a technical developer portfolio
 
 | Beat | Device | Reason |
 |---|---|---|
-| Introduction | pinned sky with kinetic type | Establishes the reference's motion language immediately |
-| Identity | flow with portrait reveal | Lets the pace settle and makes the work personal |
-| Work | asymmetric gallery | Makes range easy to scan |
-| About | route curtain into editorial spread | Creates a hard chapter change without reloading |
-| Services | accordion | Lets visitors control the level of detail |
-| Close | contact band and drawer | Resolves into one clear action |
+| Introduction | authored sky depth and bilingual live console | Establishes the visual world and its signature control without delaying the first read |
+| Identity | flow cues and an early-resolving portrait wipe | Lets the pace settle, makes the work personal, and leaves the full portrait unobstructed at its natural reading position |
+| Evidence | staggered flow labels | Compresses clients, credentials, and stack into a calm factual beat |
+| Work | pinned horizontal gallery | Turns vertical travel into a walkable portfolio collection and creates the active peak after the quiet evidence beat |
+| Close | full-section reveal, contact action, and garden resolution | Resolves into one clear action, then holds in a real footer rather than fading away |
+
+Device families: flow cues, reveal, parallax, pan, and pointer tilt. No family repeats as the primary device in adjacent beats. The normal-motion homepage measures about 9 viewport-heights; reduced motion removes pinned travel and exposes the complete work collection as a static grid.
+
+## Fingerprint gate
+
+This is completion of the existing `portfolio-reference-refresh` build, not a second build, so it is checked against its existing registry row rather than appended as a duplicate. Grammar, navigation, hero, close, and signature identity remain the same; the missing scroll score is now implemented.
 
 No authored dead scroll.

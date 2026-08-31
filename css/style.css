@@ -880,6 +880,8 @@ html[dir="rtl"] .cert-issuer, html[dir="rtl"] .cert-verify {
 .cursor-rosette {
   position: absolute; left: 50%; top: 50%;
   width: 54px; height: 54px; margin: -27px 0 0 -27px;
+  max-width: none;
+  overflow: visible;
   opacity: 0; pointer-events: none;
   transform: scale(.3) rotate(-40deg);
   transition: opacity .28s var(--ease), transform .5s cubic-bezier(.34, 1.56, .64, 1);
@@ -1460,7 +1462,13 @@ html[data-theme="night"] .dial:not(.is-on) .dial-label { color: #F3EEDF; }
   opacity: 0; transform: translateY(24px); transition: opacity .7s var(--ease), transform .7s var(--ease);
 }
 .story-portrait.in { opacity: 1; transform: none; }
-.story-portrait img { aspect-ratio: 16/9; object-fit: cover; }
+.story-portrait img {
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  transform: scale(calc(1 + (1 - var(--sc-reveal-progress, 1)) * .035));
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
 .strip { background: linear-gradient(var(--ground), var(--sand)); }
 .strip-label, .strip-list { justify-content: center; }
 .card { background: var(--card); }
@@ -1499,6 +1507,113 @@ html[data-theme="night"] .dial:not(.is-on) .dial-label { color: #F3EEDF; }
   .cert-list { grid-template-columns: 1fr; }
 }
 
+/* Arabic needs its own display rhythm. The English art direction relies on a
+   very large offset second line; applying that geometry to joined Arabic
+   script makes the phrase sprawl behind the console and outside the viewport. */
+html[dir="rtl"] .hero-display {
+  /* Reserve the left side for the language console on desktop. The available
+     text column grows with the viewport and becomes full-width once the
+     console drops into flow at the tablet breakpoint. */
+  width: min(100%, 72rem, calc(90vw - 720px));
+  margin-left: auto;
+  font-size: clamp(68px, 7.4vw, 116px);
+  line-height: 1.18;
+  text-align: right;
+}
+html[dir="rtl"] .hero-display .line-2 {
+  width: min(100%, 24ch);
+  margin-left: auto;
+  padding: 0;
+  font-family: "IBM Plex Sans Arabic", system-ui, sans-serif;
+  font-size: clamp(34px, 3.25vw, 52px);
+  font-weight: 500;
+  line-height: 1.45;
+}
+@media (max-width: 1200px) {
+  html[dir="rtl"] .hero-display {
+    width: 100%;
+    font-size: clamp(56px, 9vw, 88px);
+  }
+  html[dir="rtl"] .hero-display .line-2 {
+    font-size: clamp(30px, 4.8vw, 46px);
+  }
+}
+@media (max-width: 760px) {
+  html[dir="rtl"] .hero-display {
+    font-size: clamp(44px, 12vw, 58px);
+    line-height: 1.22;
+  }
+  html[dir="rtl"] .hero-display .line-2 {
+    width: 100%;
+    font-size: clamp(25px, 7vw, 34px);
+    line-height: 1.5;
+  }
+}
+
+/* The project cover, not its readable label, carries the depth movement. */
+[data-view="home"] .card { transform-style: preserve-3d; }
+[data-view="home"] .card-meta { position: relative; z-index: 2; background: var(--card); }
+.story-portrait[data-sc-reveal] {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+
+[data-view="home"] .home-work[data-sc-act="pan"] { padding: 0; }
+.home-work-stage {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  background: var(--ground);
+}
+.home-work-rail {
+  width: max-content;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: clamp(19rem, 36vw, 32rem);
+  align-items: stretch;
+  gap: clamp(1rem, 2.3vw, 2rem);
+  padding: clamp(5rem, 9vh, 7rem) var(--pad);
+  will-change: transform;
+}
+.work-rail-intro {
+  min-height: min(66vh, 38rem);
+  margin: 0;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.work-rail-intro .h2-serif { font-size: clamp(42px, 5vw, 74px); }
+.home-work-rail .card {
+  width: 100%;
+  min-height: min(66vh, 38rem);
+  grid-column: auto;
+  grid-row: auto;
+}
+.home-work-rail .cover,
+.home-work-rail .cover-tall,
+.home-work-rail .cover-flat {
+  min-height: 0;
+  flex: 1 1 auto;
+  aspect-ratio: auto;
+}
+.home-work-rail .card-meta { flex: 0 0 auto; }
+.home-work-rail .card-cta .cover { min-height: 100%; }
+
+@media (max-width: 760px) {
+  .home-work-rail {
+    grid-auto-columns: min(82vw, 21rem);
+    gap: 1rem;
+    padding-block: 5.5rem;
+  }
+  .work-rail-intro,
+  .home-work-rail .card { min-height: 64svh; }
+  .work-rail-intro .h2-serif { font-size: clamp(38px, 11vw, 52px); }
+}
+
 /* ============================================================
    Reduced motion
    ============================================================ */
@@ -1509,6 +1624,7 @@ html[data-theme="night"] .dial:not(.is-on) .dial-label { color: #F3EEDF; }
     transition-duration: .001ms !important;
   }
   .hero-display .ch { opacity: 1 !important; transform: none !important; }
+  .story-portrait img { transform: none !important; }
   .card, .rv { opacity: 1 !important; transform: none !important; }
   .sun, .moon, .cloud, .cloud-layer, .plane { transform: none !important; rotate: none !important; }
   /* Ambient sky motion is removed outright rather than fast-forwarded. */
@@ -1516,4 +1632,18 @@ html[data-theme="night"] .dial:not(.is-on) .dial-label { color: #F3EEDF; }
     animation: none !important;
   }
   .flight { display: none; }
+  .home-work[data-sc-act="pan"] { height: auto !important; }
+  .home-work-stage { height: auto; overflow-x: auto; }
+  .home-work-rail {
+    width: auto;
+    grid-auto-flow: row;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding-block: var(--pad);
+    transform: none !important;
+  }
+  .work-rail-intro { grid-column: 1 / -1; min-height: auto; }
+  .home-work-rail .card { min-height: 28rem; }
+}
+@media (prefers-reduced-motion: reduce) and (max-width: 760px) {
+  .home-work-rail { grid-template-columns: 1fr; }
 }
